@@ -96,7 +96,7 @@ namespace AuditTrailer.TripManagement
             trip.DateOccurred = dateOccureddtPicker.Value;
             trip.Store = _lastSelectedStore;
             trip.MedicineDetails = new Tuple<string, int, int>(
-                _lastSelectedMedicine.Name, int.Parse(boxSizeTextBox.Text), (int)amountBoughtNumericTextBox.Value);
+                _lastSelectedMedicine.Name, int.Parse(boxSizeDropDown.SelectedItem.ToString()), (int)amountBoughtNumericTextBox.Value);
             trip.PainRelieverBought = _lastSelectedMedicine;
             _tripManager.AddTrip(trip);
             MessageBox.Show("Successfully added trip!");
@@ -107,6 +107,7 @@ namespace AuditTrailer.TripManagement
             ComboBox medicine = (ComboBox)sender;
             var name = medicine.SelectedItem.ToString();
             _lastSelectedMedicine = _medicines.First(f => f.Name.Equals(name));
+            boxSizeDropDown.DataSource = _lastSelectedMedicine.BoxSizes.Select(b => b.Name).ToList();
 
         }
     }

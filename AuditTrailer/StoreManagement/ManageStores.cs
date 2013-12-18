@@ -33,6 +33,7 @@ namespace AuditTrailer.StoreManagement
         {
             GetAllStores();
             LoadStores();
+            viewMoreDetailsButton.Enabled = false;
         }
 
         private void LoadStores()
@@ -46,7 +47,10 @@ namespace AuditTrailer.StoreManagement
 
         private void storeCollectionCombox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            locationComboBox.Items.Clear();
+            locationComboBox.Text = string.Empty;
             CalculateLocationDropdown((ComboBox)sender);
+            viewMoreDetailsButton.Enabled = false;
         }
 
         private void CalculateLocationDropdown(ComboBox sender)
@@ -62,7 +66,10 @@ namespace AuditTrailer.StoreManagement
 
         private void locationComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (locationComboBox.SelectedItem != null && !string.IsNullOrEmpty(locationComboBox.Text))
+            {
+                viewMoreDetailsButton.Enabled = true;
+            }
         }
 
         private void viewMoreDetailsButton_Click(object sender, EventArgs e)
@@ -91,6 +98,14 @@ namespace AuditTrailer.StoreManagement
         protected override void LoadForm()
         {
             InitializeComponent();
+        }
+
+        private void locationComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(locationComboBox.Text))
+            {
+                viewMoreDetailsButton.Enabled = false;
+            }
         }
     }
 }

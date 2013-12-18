@@ -6,6 +6,7 @@ using System.Text;
 namespace AuditTrailer.Application.Managers
 {
     using System.IO;
+    using System.Security;
 
     using AuditTrailer.Application.Database;
     using AuditTrailer.Application.Model;
@@ -14,9 +15,14 @@ namespace AuditTrailer.Application.Managers
     {
         private DatabaseConnection connection;
 
+        private BoxSizeManager _boxSizeManager;
+
+        private CollectionManager _collectionManager;
         public TripManager(DatabaseConnection connection)
         {
             this.connection = connection;
+            _boxSizeManager = new BoxSizeManager(connection);
+            _collectionManager = new CollectionManager(connection);
         }
 
         public void AddTrip(Trip trip)
@@ -32,12 +38,20 @@ namespace AuditTrailer.Application.Managers
                 }
             }
 
+            var boxSize = _boxSizeManager.GetBoxSize(trip.BoxSizeBought);
+            var medicineBoxSize = _boxSizeManager.GetMedicineBoxSize(trip.PainRelieverBought, trip.BoxSizeBought);
+
+            if (medicineBoxSize.ID == 0)
+            {
+                throw new SecurityException("Box Size is not applicable for this medication");
+            }
+
             command = connection.CreateCommand(
                 @"INSERT INTO Trip 
                     SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, @UserID");
             command.Parameters.AddWithValue("@LastID", lastID + 1);
             command.Parameters.AddWithValue("@DateOccurred", trip.DateOccurred);
-            command.Parameters.AddWithValue("@BoxSizeBought", trip.BoxSizeBought);
+            command.Parameters.AddWithValue("@BoxSizeBought", medicineBoxSize.BoxSizeID);
             command.Parameters.AddWithValue("@AmountBought", trip.AmountBought);
             command.Parameters.AddWithValue("@MedicineID", trip.PainRelieverBought.ID);
             command.Parameters.AddWithValue("@StoreID", trip.Store.ID);
@@ -53,9 +67,10 @@ namespace AuditTrailer.Application.Managers
         public IEnumerable<Trip> GetTripsForStore(Store store)
         {
             var trips = new List<Trip>();
-            string commandText = @"SELECT T.TripID, T.DateOccurred, M.Name, T.BoxSizeBought, T.AmountOfBoxesBought, U.FirstName As [FirstName], U.Surname FROM Trip T 
+            string commandText = @"SELECT T.TripID, T.DateOccurred, M.Name, BZ.Name As [BoxSize], T.AmountOfBoxesBought, U.FirstName As [FirstName], U.Surname FROM Trip T 
                                     JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
                                     JOIN User U ON U.UserID = T.UserID
+                                    JOIN BoxSize BZ ON BZ.BoxSizeID = T.BoxSizeID 
                                     WHERE T.StoreID = @StoreID";
             var command = connection.CreateCommand(commandText);
             command.Parameters.AddWithValue("@StoreID", store.ID);
@@ -69,8 +84,9 @@ namespace AuditTrailer.Application.Managers
                     trip.User.Surname = reader["Surname"].ToString();
                     trip.Store = store;
                     trip.MedicineDetails = new Tuple<string, int, int>(reader["Name"].ToString(),
-                        int.Parse(reader["BoxSizeBought"].ToString()), int.Parse(reader["AmountOfBoxesBought"].ToString()));
+                        int.Parse(reader["BoxSize"].ToString()), int.Parse(reader["AmountOfBoxesBought"].ToString()));
                     trip.DateOccurred = DateTime.Parse(reader["DateOccurred"].ToString());
+                    
                     trips.Add(trip);
                 }
             }

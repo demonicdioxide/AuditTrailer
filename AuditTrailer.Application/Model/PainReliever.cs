@@ -13,6 +13,6 @@ namespace AuditTrailer.Application.Model
         public double MainAnalgesicAmount { get; set; }
         public Analgesic SecondaryAnalgesic { get; set; }
         public double SecondaryAnalgesicAmount { get; set; }
-
+        public IEnumerable<BoxSize> BoxSizes { get; set; } 
     }
 }

@@ -70,6 +70,7 @@
             this.locationComboBox.Size = new System.Drawing.Size(121, 21);
             this.locationComboBox.TabIndex = 3;
             this.locationComboBox.SelectedIndexChanged += new System.EventHandler(this.locationComboBox_SelectedIndexChanged);
+            this.locationComboBox.TextChanged += new System.EventHandler(this.locationComboBox_TextChanged);
             // 
             // viewMoreDetailsButton
             // 

@@ -56,10 +56,13 @@
     <Compile Include="Authorisation\SecurityManager.cs" />
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Managers\BoxSizeManager.cs" />
     <Compile Include="Managers\CollectionManager.cs" />
     <Compile Include="Managers\TripManager.cs" />
     <Compile Include="Model\Analgesic.cs" />
+    <Compile Include="Model\BoxSize.cs" />
     <Compile Include="Model\Employee.cs" />
+    <Compile Include="Model\MedicineBoxSize.cs" />
     <Compile Include="Model\Membership.cs" />
     <Compile Include="Model\PainReliever.cs" />
     <Compile Include="Model\Store.cs" />

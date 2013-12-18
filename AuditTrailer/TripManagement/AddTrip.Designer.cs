@@ -38,8 +38,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.amountBoughtNumericTextBox = new System.Windows.Forms.NumericUpDown();
-            this.boxSizeTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.boxSizeDropDown = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.amountBoughtNumericTextBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -130,13 +130,6 @@
             this.amountBoughtNumericTextBox.Size = new System.Drawing.Size(200, 20);
             this.amountBoughtNumericTextBox.TabIndex = 9;
             // 
-            // boxSizeTextBox
-            // 
-            this.boxSizeTextBox.Location = new System.Drawing.Point(113, 114);
-            this.boxSizeTextBox.Name = "boxSizeTextBox";
-            this.boxSizeTextBox.Size = new System.Drawing.Size(200, 20);
-            this.boxSizeTextBox.TabIndex = 10;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -146,13 +139,22 @@
             this.label5.TabIndex = 11;
             this.label5.Text = "Box Size:";
             // 
+            // boxSizeDropDown
+            // 
+            this.boxSizeDropDown.FormattingEnabled = true;
+            this.boxSizeDropDown.Location = new System.Drawing.Point(113, 114);
+            this.boxSizeDropDown.Name = "boxSizeDropDown";
+            this.boxSizeDropDown.Size = new System.Drawing.Size(200, 21);
+            this.boxSizeDropDown.TabIndex = 12;
+            
+            // 
             // AddTrip
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(509, 188);
+            this.Controls.Add(this.boxSizeDropDown);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.boxSizeTextBox);
             this.Controls.Add(this.amountBoughtNumericTextBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -184,7 +186,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown amountBoughtNumericTextBox;
-        private System.Windows.Forms.TextBox boxSizeTextBox;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox boxSizeDropDown;
     }
 }

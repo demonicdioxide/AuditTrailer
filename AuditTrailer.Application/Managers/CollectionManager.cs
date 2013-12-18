@@ -43,10 +43,29 @@ JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID");
                 var secondaryReliever = GetAllAnalgesics().First(a => a.ID.Equals(secondaryRelieverID));
                 reliefMedicine.MainAnalgesic = mainReliever;
                 reliefMedicine.SecondaryAnalgesic = secondaryReliever;
+                reliefMedicine.BoxSizes = GetBoxSizesForMedicine(reliefMedicine);
                 listOfReliefMedicine.Add(reliefMedicine);
 
             }
             return listOfReliefMedicine;
+        }
+
+        public IEnumerable<BoxSize> GetBoxSizesForMedicine(PainReliever reliever)
+        {
+            var command = connection.CreateCommand(@"SELECT B.* FROM MedicineBoxSize MBZ 
+            JOIN BoxSize B ON B.BoxSizeID = MBZ.BoxSizeID WHERE MBZ.MedicineID = @MedicineID");
+            command.Parameters.AddWithValue("@MedicineID", reliever.ID);
+            var reader = command.ExecuteReader();
+            var listOfBoxSizesForMedicine = new List<BoxSize>();
+            while (reader.Read())
+            {
+                var boxSize = new BoxSize();
+                boxSize.ID = int.Parse(reader["BoxSizeID"].ToString());
+                boxSize.Name = int.Parse(reader["Name"].ToString());
+                listOfBoxSizesForMedicine.Add(boxSize);
+            }
+
+            return listOfBoxSizesForMedicine;
         }
 
         public IEnumerable<Analgesic> GetAllAnalgesics()
