@@ -39,6 +39,7 @@ namespace AuditTrailer.StoreManagement
             store.Location = locationTextBox.Text;
             store.OpeningStartTime = TimeSpan.Parse(startTimeTextBox.Text);
             store.OpeningEndTime = TimeSpan.Parse(endTextBox.Text);
+            store.IsOnlineStore = isOnlineStoreCheckBox.Checked;
             _collectionManager.AddStore(store);
         }
     }

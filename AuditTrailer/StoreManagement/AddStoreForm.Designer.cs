@@ -37,11 +37,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.endTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.isOnlineStoreCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(67, 143);
+            this.submitButton.Location = new System.Drawing.Point(57, 157);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(119, 57);
             this.submitButton.TabIndex = 0;
@@ -118,11 +119,22 @@
             this.endTextBox.TabIndex = 7;
             this.endTextBox.ValidatingType = typeof(System.DateTime);
             // 
+            // isOnlineStoreCheckBox
+            // 
+            this.isOnlineStoreCheckBox.AutoSize = true;
+            this.isOnlineStoreCheckBox.Location = new System.Drawing.Point(126, 126);
+            this.isOnlineStoreCheckBox.Name = "isOnlineStoreCheckBox";
+            this.isOnlineStoreCheckBox.Size = new System.Drawing.Size(101, 17);
+            this.isOnlineStoreCheckBox.TabIndex = 9;
+            this.isOnlineStoreCheckBox.Text = "Is Online Store?";
+            this.isOnlineStoreCheckBox.UseVisualStyleBackColor = true;
+            // 
             // AddStoreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 226);
+            this.Controls.Add(this.isOnlineStoreCheckBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.endTextBox);
             this.Controls.Add(this.label3);
@@ -150,5 +162,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.MaskedTextBox endTextBox;
+        private System.Windows.Forms.CheckBox isOnlineStoreCheckBox;
     }
 }
