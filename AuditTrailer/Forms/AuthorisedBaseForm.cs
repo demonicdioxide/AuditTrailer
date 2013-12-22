@@ -1,24 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿/*
+ * Created by SharpDevelop.
+ * User: Arran
+ * Date: 22/12/2013
+ * Time: 21:26
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+
+using AuditTrailer.Application.Authorisation;
+using AuditTrailer.Application.Database;
+using AuditTrailer.Application.Model;
 
 namespace AuditTrailer.Forms
 {
-    using AuditTrailer.Application.Authorisation;
-    using AuditTrailer.Application.Database;
-    using AuditTrailer.Application.Model;
+	/// <summary>
+	/// Description of AuthorisedBaseForm.
+	/// </summary>
+	public partial class AuthorisedBaseForm : BaseForm
+	{
+		public User LoggedInUser { get; set; }
 
-    public partial class AuthorisedBaseForm : BaseForm
-    {
-
-        public User LoggedInUser { get; set; }
-
-        public SecurityManager SecurityManager
+		public SecurityManager SecurityManager
         {
             get
             {
@@ -36,7 +41,5 @@ namespace AuditTrailer.Forms
         {
             //InitializeComponent();
         }
-
-        
-    }
+	}
 }

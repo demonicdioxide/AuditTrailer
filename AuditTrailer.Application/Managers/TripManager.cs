@@ -10,7 +10,7 @@ namespace AuditTrailer.Application.Managers
 
     using AuditTrailer.Application.Database;
     using AuditTrailer.Application.Model;
-
+    using AuditTrailer.Application.DotNetFourEmulation;
     public class TripManager
     {
         private DatabaseConnection connection;

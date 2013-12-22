@@ -58,8 +58,8 @@ namespace AuditTrailer.StoreManagement
             this.Text += string.Format(" {0} - {1}", store.Name, store.Location);
             nameTextBox.Text = store.Name;
             locationTextBox.Text = store.Location;
-            startTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningStartTime);
-            endTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningEndTime);
+            startTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningStartTime.Value);
+            endTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningEndTime.Value);
             isOnlineStoreCheckBox.Checked = store.IsOnlineStore;
         }
     }

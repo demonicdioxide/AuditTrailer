@@ -31,9 +31,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.storeManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageStoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tripManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addTripToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,6 +64,13 @@
             this.manageStoresToolStripMenuItem.Text = "Manage Stores";
             this.manageStoresToolStripMenuItem.Click += new System.EventHandler(this.manageStoresToolStripMenuItem_Click);
             // 
+            // addStoreToolStripMenuItem
+            // 
+            this.addStoreToolStripMenuItem.Name = "addStoreToolStripMenuItem";
+            this.addStoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addStoreToolStripMenuItem.Text = "Add Store";
+            this.addStoreToolStripMenuItem.Click += new System.EventHandler(this.addStoreToolStripMenuItem_Click);
+            // 
             // tripManagementToolStripMenuItem
             // 
             this.tripManagementToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -79,13 +86,6 @@
             this.addTripToolStripMenuItem.Text = "Add Trip";
             this.addTripToolStripMenuItem.Click += new System.EventHandler(this.addTripToolStripMenuItem_Click);
             // 
-            // addStoreToolStripMenuItem
-            // 
-            this.addStoreToolStripMenuItem.Name = "addStoreToolStripMenuItem";
-            this.addStoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addStoreToolStripMenuItem.Text = "Add Store";
-            this.addStoreToolStripMenuItem.Click += new System.EventHandler(this.addStoreToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -95,6 +95,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

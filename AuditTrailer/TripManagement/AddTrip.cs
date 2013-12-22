@@ -15,7 +15,7 @@ namespace AuditTrailer.TripManagement
     using AuditTrailer.Application.Managers;
     using AuditTrailer.Application.Model;
     using AuditTrailer.Forms;
-
+    using AuditTrailer.Application.DotNetFourEmulation;
     using Authorisation;
 
     public partial class AddTrip : AuthorisedBaseForm

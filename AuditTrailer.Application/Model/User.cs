@@ -25,9 +25,6 @@
             }
         }
 
-        /// <summary>
-        /// Whether they are a 'global' administrator or not - global admins have access to everything.
-        /// </summary>
-        public bool IsSystemAdministrator { get; set; }
+        public RoleEnum Role { get; set; }
     }
 }

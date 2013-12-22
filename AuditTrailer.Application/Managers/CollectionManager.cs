@@ -98,8 +98,10 @@ JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID");
                 // had problems parsing it into a TimeSpan
                 //convert it into a datetime and then use the timespan from that
                 //.NET will then do most of the work for us.
-                store.OpeningStartTime = DateTime.Parse(reader["CommonOpeningTimeStart"].ToString()).TimeOfDay;
-                store.OpeningEndTime = DateTime.Parse(reader["CommonOpeningTimeEnd"].ToString()).TimeOfDay;
+                var openingTimeStart = reader["CommonOpeningTimeStart"];
+                store.OpeningStartTime = string.IsNullOrEmpty(openingTimeStart.ToString()) ? null : (TimeSpan?)DateTime.Parse(openingTimeStart.ToString()).TimeOfDay;
+                var openingTimeEnd = reader["CommonOpeningTimeEnd"];
+                store.OpeningEndTime = string.IsNullOrEmpty(openingTimeEnd.ToString()) ? null : (TimeSpan?)DateTime.Parse(openingTimeEnd.ToString()).TimeOfDay;
                 store.IsOnlineStore = bool.Parse(reader["IsOnlineStore"].ToString());
                 listOfStores.Add(store);
             }

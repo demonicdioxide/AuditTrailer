@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -82,7 +83,7 @@
                         user.FirstName = reader["FirstName"].ToString();
                         user.Surname = reader["Surname"].ToString();
                         user.Email = reader["Email"].ToString();
-                        user.IsSystemAdministrator = bool.Parse(reader["IsSystemAdministrator"].ToString());
+                        user.Role = GetRoleByUser(user);
                         return user;
                     }
 
@@ -91,9 +92,65 @@
             }
         }
 
+        public RoleEnum GetRoleByUser(User user)
+        {
+            var command = connection.CreateCommand(@"SELECT * FROM UserRole UR WHERE UR.UserID = @UserID");
+            command.Parameters.AddWithValue("@UserID", user.ID);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int enumIntegerValue = int.Parse(reader["RoleID"].ToString());
+                    return (RoleEnum)enumIntegerValue;
+                }
+            }
+
+            throw new SecurityException("User has no membership");
+        }
+        
+        public string GetRoleDisplayName(RoleEnum role)
+        {
+        	var command = connection.CreateCommand(@"SELECT R.DisplayName FROM Role R WHERE R.RoleID = @RoleID");
+        	command.Parameters.AddWithValue("@RoleID", (int)role);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                	return reader["DisplayName"].ToString();
+                }
+            }
+            
+            //assumption: if we cannot find it, return the same thing as what enum says
+            return role.ToString();
+        }
+
+        public bool IsUserAllowedToAccessResource(User user, RoleEnum requiredRoleEnum)
+        {
+            return user.Role > requiredRoleEnum;
+        }
+
         public User GetUserByID(int id)
         {
-            return new User() { };
+            var user = new User();
+            using (var connection = DatabaseConnector.Create())
+            {
+                var command = connection.CreateCommand("SELECT * FROM User WHERE UserID = @UserID");
+                command.Parameters.AddWithValue("@UserID", id);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        user.ID = int.Parse(reader["UserID"].ToString());
+                        user.FirstName = reader["FirstName"].ToString();
+                        user.Surname = reader["Surname"].ToString();
+                        user.Email = reader["Email"].ToString();
+                        user.Role = GetRoleByUser(user);
+                        return user;
+                    }
+
+                    return null; // no user found.
+                }
+            }
         }
 
         public string CreatePasswordHash(string password)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using AuditTrailer.Application.DotNetFourEmulation;
+
 namespace AuditTrailer.Application.Model
 {
     public class Trip
@@ -17,7 +19,7 @@ namespace AuditTrailer.Application.Model
         {
             get
             {
-                return MedicineDetails.Item1;
+                return MedicineDetails.First;
             }
         }
 
@@ -25,7 +27,7 @@ namespace AuditTrailer.Application.Model
         {
             get
             {
-                return MedicineDetails.Item2;
+                return MedicineDetails.Second;
             }
         }
         public DateTime DateOccurred { get; set; }
@@ -33,7 +35,7 @@ namespace AuditTrailer.Application.Model
         {
             get
             {
-                return MedicineDetails.Item3;
+                return MedicineDetails.Third;
             }
         }
     }

@@ -25,8 +25,8 @@
         {
             get
             {
-                return !(string.IsNullOrWhiteSpace(emailTextBox.Text)
-                       || string.IsNullOrWhiteSpace(passwordTextBox.Text));
+                return !(string.IsNullOrEmpty(emailTextBox.Text)
+                       || string.IsNullOrEmpty(passwordTextBox.Text));
             }
         }
 
@@ -66,7 +66,6 @@
             Hide();
             var mainForm = new MainForm(user);
             mainForm.Show();
-            Show();
         }
     }
 }

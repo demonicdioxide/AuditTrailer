@@ -1,6 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+# SharpDevelop 4.3
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditTrailer", "AuditTrailer\AuditTrailer.csproj", "{8BF33A21-1873-45C5-97D9-58ABF98456ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditTrailer.Application", "AuditTrailer.Application\AuditTrailer.Application.csproj", "{E57D2B23-4BFA-4485-B397-FE51AB686298}"

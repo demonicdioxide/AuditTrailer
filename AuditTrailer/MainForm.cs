@@ -1,4 +1,5 @@
-﻿namespace AuditTrailer
+﻿using AuditTrailer.UserManagement;
+namespace AuditTrailer
 {
     using System;
     using System.Collections.Generic;
@@ -22,8 +23,11 @@
 
         private void manageStoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var manageStoresForm = new ManageStores(LoggedInUser);
-            manageStoresForm.Show();
+        	var userSettingsForm = new ManageYourSettings(LoggedInUser);
+        	userSettingsForm.Show();
+        	
+            //var manageStoresForm = new ManageStores(LoggedInUser);
+            //manageStoresForm.Show();
         }
 
         protected override void LoadForm()
@@ -42,6 +46,34 @@
         {
             BaseForm addStoreForm = new AddStoreForm(LoggedInUser);
             addStoreForm.Show();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Dictionary<ToolStripMenuItem, RoleEnum> rolesRequired = new Dictionary<ToolStripMenuItem, RoleEnum>
+                {
+                    { addStoreToolStripMenuItem, RoleEnum.Moderator },
+                    { addTripToolStripMenuItem, RoleEnum.User }
+                };
+            var results = rolesRequired.Select(
+                s =>
+                { 
+                	return new { Item = s.Key, Allowed = SecurityManager.IsUserAllowedToAccessResource(LoggedInUser, s.Value)};
+                });
+            var allowedResources = results.Where(result => result.Allowed);
+            var blockedResources = results.Where(result => !result.Allowed);
+            
+            foreach (var allowedResource in allowedResources) 
+            {
+            	allowedResource.Item.Visible = true;
+            }
+            
+           	foreach (var blockedResource in blockedResources) 
+            {
+            	blockedResource.Item.Visible = false;
+            }
+            
+                	
         }
     }
 }

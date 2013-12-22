@@ -27,20 +27,43 @@ namespace AuditTrailer.StoreManagement
             _collectionManager = new CollectionManager(DatabaseConnector.Create());
         }
 
-        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             Store store = new Store();
             store.Name = nameTextBox.Text;
             store.Location = locationTextBox.Text;
-            store.OpeningStartTime = TimeSpan.Parse(startTimeTextBox.Text);
-            store.OpeningEndTime = TimeSpan.Parse(endTextBox.Text);
+            store.OpeningStartTime = startTimeTextBox.Enabled ? (TimeSpan?)TimeSpan.Parse(startTimeTextBox.Text) : null;
+            store.OpeningEndTime = endTextBox.Enabled ? (TimeSpan?)TimeSpan.Parse(endTextBox.Text) : null;
             store.IsOnlineStore = isOnlineStoreCheckBox.Checked;
             _collectionManager.AddStore(store);
+            MessageBox.Show("Successfully added store!");
+            ClearStates();
+        }
+        
+        private void ClearStates()
+        {
+        	nameTextBox.Text = string.Empty;
+        	locationTextBox.Text = string.Empty;
+        	isOnlineStoreCheckBox.Checked = false;
+        	endTextBox.Text = string.Empty;
+        	startTimeTextBox.Text = string.Empty;
+        }
+        
+        void IsOnlineStoreCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+        	if (((CheckBox)sender).Checked) 
+        	{
+        		locationTextBox.Enabled = false;
+        		startTimeTextBox.Enabled = false;
+        		endTextBox.Enabled = false;
+        	}
+        	else
+        	{
+        		locationTextBox.Enabled = true;
+        		startTimeTextBox.Enabled = true;
+        		endTextBox.Enabled = true;	
+        	}
+
         }
     }
 }
