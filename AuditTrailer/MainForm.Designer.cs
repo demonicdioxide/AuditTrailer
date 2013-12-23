@@ -46,6 +46,8 @@ namespace AuditTrailer
 			this.manageUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.yourSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.databaseManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.backupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainFormMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -55,7 +57,8 @@ namespace AuditTrailer
 									this.storeManagementToolStripMenuItem,
 									this.tripManagementToolStripMenuItem,
 									this.userManagementToolStripMenuItem,
-									this.logOutToolStripMenuItem});
+									this.logOutToolStripMenuItem,
+									this.databaseManagementToolStripMenuItem});
 			this.mainFormMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainFormMenuStrip.Name = "mainFormMenuStrip";
 			this.mainFormMenuStrip.Size = new System.Drawing.Size(620, 24);
@@ -112,13 +115,13 @@ namespace AuditTrailer
 			// manageUsersToolStripMenuItem
 			// 
 			this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-			this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+			this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.manageUsersToolStripMenuItem.Text = "Manage Users";
 			// 
 			// yourSettingsToolStripMenuItem
 			// 
 			this.yourSettingsToolStripMenuItem.Name = "yourSettingsToolStripMenuItem";
-			this.yourSettingsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+			this.yourSettingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.yourSettingsToolStripMenuItem.Text = "Your Settings";
 			this.yourSettingsToolStripMenuItem.Click += new System.EventHandler(this.YourSettingsToolStripMenuItemClick);
 			// 
@@ -128,6 +131,20 @@ namespace AuditTrailer
 			this.logOutToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
 			this.logOutToolStripMenuItem.Text = "Log Out";
 			this.logOutToolStripMenuItem.Click += new System.EventHandler(this.LogOutToolStripMenuItemClick);
+			// 
+			// databaseManagementToolStripMenuItem
+			// 
+			this.databaseManagementToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.backupToolStripMenuItem});
+			this.databaseManagementToolStripMenuItem.Name = "databaseManagementToolStripMenuItem";
+			this.databaseManagementToolStripMenuItem.Size = new System.Drawing.Size(141, 20);
+			this.databaseManagementToolStripMenuItem.Text = "Database Management";
+			// 
+			// backupToolStripMenuItem
+			// 
+			this.backupToolStripMenuItem.Name = "backupToolStripMenuItem";
+			this.backupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.backupToolStripMenuItem.Text = "Backup";
 			// 
 			// MainForm
 			// 
@@ -145,6 +162,8 @@ namespace AuditTrailer
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem databaseManagementToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem yourSettingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem manageUsersToolStripMenuItem;

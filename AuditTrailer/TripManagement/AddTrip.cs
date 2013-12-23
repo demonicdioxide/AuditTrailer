@@ -139,7 +139,7 @@ namespace AuditTrailer.TripManagement
                 _lastSelectedMedicine.Name, int.Parse(boxSizeDropDown.SelectedItem.ToString()), (int)amountBoughtNumericTextBox.Value);
             trip.PainRelieverBought = _lastSelectedMedicine;
             trip.Notes = notesTextBox.Text;
-            _tripManager.AddTrip(trip);
+			_tripManager.AddTrip(trip);
             MessageBox.Show("Successfully added trip!");
             ClearStates();
         }
@@ -155,16 +155,14 @@ namespace AuditTrailer.TripManagement
         
         private void ClearStates()
         {
-        	dropdownStores.SelectedItem = null;
         	dropdownStores.SelectedText = string.Empty;
         	dropdownStores.Text = string.Empty;
         	amountBoughtNumericTextBox.Value = 0;
-        	_lastSelectedStore = null;
         	dateOccureddtPicker.Value = DateTime.Today;
         	notesTextBox.Text = string.Empty;
-        	boxSizeDropDown.SelectedItem = null;
         	boxSizeDropDown.SelectedText = string.Empty;
         	boxSizeDropDown.Text = string.Empty;
+        	medicineComboBox.SelectedText = string.Empty;
         }
         
         void ToolTip1Popup(object sender, PopupEventArgs e)

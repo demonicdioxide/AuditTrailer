@@ -26,6 +26,7 @@ namespace AuditTrailerScheduler
 		public static void Main(string[] args)
 		{
 			string firstArgument = args.FirstOrDefault();
+			firstArgument = string.IsNullOrEmpty(firstArgument) ? string.Empty : firstArgument;
 			if (firstArgument.Equals("reminderemail", StringComparison.OrdinalIgnoreCase))
 			{
 				SendReminderEmail(args.ElementAt(1));

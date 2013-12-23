@@ -15,7 +15,7 @@ namespace AuditTrailer.Application
 	/// </summary>
 	public class MedicineConstants
 	{
-		public static int NUROFEN_PLUS_DAILY_DOSAGE = 8;
+		public static int NUROFEN_PLUS_DAILY_DOSAGE = 4;
 		public static int SOLPADEINE_MAX_SOLUBLE_DAILY_DOSAGE = 4;
 		public static int SOLPDAEINE_MAX_DAILY_DOSAGE = 4;
 		public static int AMOUNT_OF_DOSAGES_TAKEN_DAILY = 2;

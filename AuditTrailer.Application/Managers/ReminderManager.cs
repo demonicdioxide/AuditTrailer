@@ -38,10 +38,9 @@ namespace AuditTrailer.Application.Managers
 		
 		public IEnumerable<Tuple<string, int, DateTime>> GetMedicineReminderInformation(User user)
 		{
-			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) - SUM(IFNULL(ML.HowManyTaken, 0)) As [Amount Of Tablets], M.Name As [MedicineName] FROM Trip T
+			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) As [Amount Of Tablets], M.Name As [MedicineName], T.BoughtMedicineID As [MedicineID] FROM Trip T
 													JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
 													JOIN BoxSize B ON B.BoxSizeID = T.BoxSizeID
-													LEFT JOIN MedicineLog ML ON ML.MedicineID = T.[BoughtMedicineID]
 													WHERE T.UserID = @UserID
 													GROUP BY M.PainRelieverID");
 			command.Parameters.AddWithValue("@UserID", user.ID);
@@ -51,16 +50,29 @@ namespace AuditTrailer.Application.Managers
 				while (reader.Read())
 				{
 					int amountOfTablets = int.Parse(reader["Amount Of Tablets"].ToString());
-					
-					
+					int medicineID = int.Parse(reader["MedicineID"].ToString());
+					int amountAlreadyTaken = GetAmountAlreadyTaken(medicineID);
+					int actualTabletsRemaining = amountOfTablets - amountAlreadyTaken;
 					string nameOfMedicine = reader["MedicineName"].ToString();
 					int dosage = _dosageMapping[nameOfMedicine] * MedicineConstants.AMOUNT_OF_DOSAGES_TAKEN_DAILY;
-					DateTime runOutDate = DateTime.Now.AddDays(amountOfTablets / (dosage));
-					_information.Add(new Tuple<string, int, DateTime>(nameOfMedicine, amountOfTablets, runOutDate));
+					DateTime runOutDate = DateTime.Now.AddDays(actualTabletsRemaining / (dosage));
+					_information.Add(new Tuple<string, int, DateTime>(nameOfMedicine, actualTabletsRemaining, runOutDate));
 				}
 			}
 			
 			return _information;
+		}
+		
+		public int GetAmountAlreadyTaken(int medicineID)
+		{
+			var command = _connection.CreateCommand(@"SELECT SUM(M.HowManyTaken) As [TakenAmount] FROM MedicineLog M WHERE M.MedicineID = @MedicineID");
+			command.Parameters.AddWithValue("@MedicineID", medicineID);
+			using (var reader = command.ExecuteReader())
+			{
+				reader.Read();
+				var taken = reader["TakenAmount"];
+				return string.IsNullOrEmpty(taken.ToString()) ? 0 : int.Parse(taken.ToString());
+			}
 		}
 		
 		public void InsertMedicineLogEntry(MedicineLogEntry entry)
