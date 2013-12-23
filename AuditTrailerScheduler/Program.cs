@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using AuditTrailer.Application;
@@ -24,16 +25,26 @@ namespace AuditTrailerScheduler
 	{
 		public static void Main(string[] args)
 		{
-			string firstArgument = args.First();
+			string firstArgument = args.FirstOrDefault();
 			if (firstArgument.Equals("reminderemail", StringComparison.OrdinalIgnoreCase))
 			{
 				SendReminderEmail(args.ElementAt(1));
+			}
+			else if (firstArgument.Equals("backup"))
+			{
+				BackupDatabase();
 			}
 			else
 			{
 				EnterLogEntryInformation();
 			}
 			Environment.Exit(0); // successful exit.
+		}
+		
+		private static void BackupDatabase()
+		{
+			string uniqueFileName = DateTime.Now.ToString("ddMMyyyy.HH.mm.db");
+			File.Copy(@"C:\AuditTrailer.db", @"C:\Audit Trailer\Backups\" + uniqueFileName);
 		}
 		
 		private static void EnterLogEntryInformation()

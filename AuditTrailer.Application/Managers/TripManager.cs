@@ -68,7 +68,7 @@ namespace AuditTrailer.Application.Managers
         public IEnumerable<Trip> GetTripsForStore(Store store)
         {
             var trips = new List<Trip>();
-            string commandText = @"SELECT T.TripID, T.DateOccurred, M.Name, BZ.Name As [BoxSize], T.AmountOfBoxesBought, U.FirstName As [FirstName], U.Surname FROM Trip T 
+            string commandText = @"SELECT T.TripID, T.DateOccurred, M.Name, BZ.Name As [BoxSize], T.AmountOfBoxesBought, U.FirstName As [FirstName], U.Surname, T.Notes FROM Trip T 
                                     JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
                                     JOIN User U ON U.UserID = T.UserID
                                     JOIN BoxSize BZ ON BZ.BoxSizeID = T.BoxSizeID 

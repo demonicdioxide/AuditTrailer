@@ -56,11 +56,18 @@ namespace AuditTrailer.TripManagement
             // do we have it in the cache?
             if (!_storeTrips.TryGetValue(dropdownBox.SelectedItem.ToString(), out lastTrip))
             {
-                // no? lets go get it from the database
-                var storeParts = dropdownBox.SelectedItem.ToString().Split('-').Select(s => s.Trim());
-                var store = _stores.First(f => f.Name.Equals(storeParts.First()) && f.Location.Equals(storeParts.Last()));
-                _lastSelectedStore = store;
-                lastTrip = GetLastTripForStore(store);
+            	if (dropdownBox.SelectedItem.ToString().Contains("-"))
+            	{
+                	var storeParts = dropdownBox.SelectedItem.ToString().Split('-').Select(s => s.Trim());
+                	var store = _stores.First(f => f.Name.Equals(storeParts.First()) && f.Location.Equals(storeParts.Last()));            		
+                	_lastSelectedStore = store;
+            	}
+            	else
+            	{
+            		_lastSelectedStore = _stores.First(f => f.Name.Equals(dropdownBox.SelectedItem.ToString()));
+            	}
+
+                lastTrip = GetLastTripForStore(_lastSelectedStore);
             }
 
             // after all this, is it null? If so they really have not been there
@@ -70,7 +77,7 @@ namespace AuditTrailer.TripManagement
             }
             else
             {
-                lastVisitedLabel.Text = "Last visited: " + lastTrip.DateOccurred.ToString("dd/MM/yyyy HH:mm");
+            	lastVisitedLabel.Text = "Last visited: " + lastTrip.DateOccurred.ToLongDateString();
                 _storeTrips.Add(dropdownBox.SelectedItem.ToString(), lastTrip);
             }
 
@@ -80,7 +87,15 @@ namespace AuditTrailer.TripManagement
 
         private void AddTrip_Load(object sender, EventArgs e)
         {
-            dropdownStores.DataSource = _stores.Select(s => s.Name + " - " + s.Location).ToList();
+            dropdownStores.DataSource = _stores.Select(s =>
+        	                                           {
+        	                                           	if (!string.IsNullOrEmpty(s.Location))
+        	                                           	{
+        	                                           		return s.Name + " - " + s.Location;
+        	                                           	}
+        	                                           	
+        	                                           	return s.Name;
+        	                                           }).ToList();
             medicineComboBox.DataSource = _medicines.Select(p => p.Name).ToList();
             onlineToolTip.SetToolTip(dateOccureddtPicker, "If an online store, this will be the date the medicine was picked up from MailBoxEtc");
         }
@@ -126,6 +141,7 @@ namespace AuditTrailer.TripManagement
             trip.Notes = notesTextBox.Text;
             _tripManager.AddTrip(trip);
             MessageBox.Show("Successfully added trip!");
+            ClearStates();
         }
 
         private void medicineComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -135,6 +151,20 @@ namespace AuditTrailer.TripManagement
             _lastSelectedMedicine = _medicines.First(f => f.Name.Equals(name));
             boxSizeDropDown.DataSource = _lastSelectedMedicine.BoxSizes.Select(b => b.Name).ToList();
 
+        }
+        
+        private void ClearStates()
+        {
+        	dropdownStores.SelectedItem = null;
+        	dropdownStores.SelectedText = string.Empty;
+        	dropdownStores.Text = string.Empty;
+        	amountBoughtNumericTextBox.Value = 0;
+        	_lastSelectedStore = null;
+        	dateOccureddtPicker.Value = DateTime.Today;
+        	notesTextBox.Text = string.Empty;
+        	boxSizeDropDown.SelectedItem = null;
+        	boxSizeDropDown.SelectedText = string.Empty;
+        	boxSizeDropDown.Text = string.Empty;
         }
         
         void ToolTip1Popup(object sender, PopupEventArgs e)
