@@ -83,7 +83,6 @@ namespace AuditTrailerScheduler
 			User user = _securityManager.GetUserByEmail(userEmail);
 			var reminderInformation = _reminderManager.GetMedicineReminderInformation(user);
 			DateTime closetDate = reminderInformation.Min(d => d.Third);
-			int daysOffset = 2;
 			var difference = DateTime.Now.Subtract(closetDate.AddDays(-7));
 			if (difference.Days.Between(-2, 2, true))
 			{

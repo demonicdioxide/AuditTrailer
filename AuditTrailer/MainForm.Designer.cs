@@ -45,6 +45,7 @@ namespace AuditTrailer
 			this.userManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.manageUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.yourSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainFormMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -53,7 +54,8 @@ namespace AuditTrailer
 			this.mainFormMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.storeManagementToolStripMenuItem,
 									this.tripManagementToolStripMenuItem,
-									this.userManagementToolStripMenuItem});
+									this.userManagementToolStripMenuItem,
+									this.logOutToolStripMenuItem});
 			this.mainFormMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainFormMenuStrip.Name = "mainFormMenuStrip";
 			this.mainFormMenuStrip.Size = new System.Drawing.Size(620, 24);
@@ -120,11 +122,19 @@ namespace AuditTrailer
 			this.yourSettingsToolStripMenuItem.Text = "Your Settings";
 			this.yourSettingsToolStripMenuItem.Click += new System.EventHandler(this.YourSettingsToolStripMenuItemClick);
 			// 
+			// logOutToolStripMenuItem
+			// 
+			this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+			this.logOutToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+			this.logOutToolStripMenuItem.Text = "Log Out";
+			this.logOutToolStripMenuItem.Click += new System.EventHandler(this.LogOutToolStripMenuItemClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(620, 298);
+			this.ControlBox = false;
 			this.Controls.Add(this.mainFormMenuStrip);
 			this.MainMenuStrip = this.mainFormMenuStrip;
 			this.Name = "MainForm";
@@ -135,6 +145,7 @@ namespace AuditTrailer
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem yourSettingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem manageUsersToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem userManagementToolStripMenuItem;

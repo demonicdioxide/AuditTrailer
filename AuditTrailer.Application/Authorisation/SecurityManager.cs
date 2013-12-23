@@ -64,8 +64,6 @@
             {
                 return false;
             }
-
-            return false;
         }
 
         public User GetUserByEmail(string email)

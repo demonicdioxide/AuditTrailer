@@ -91,5 +91,14 @@ namespace AuditTrailer
 			BaseForm addStoreForm = new AddStoreForm(LoggedInUser);
             addStoreForm.Show();
 		}
+		
+		void LogOutToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			var dialogResult = MessageBox.Show("Are you sure you want to log out?", "Log out confirmation", MessageBoxButtons.YesNo);
+			if (dialogResult == DialogResult.Yes) 
+			{
+				System.Windows.Forms.Application.Exit();
+			}
+		}
 	}
 }

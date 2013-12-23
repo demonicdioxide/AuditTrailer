@@ -37,10 +37,6 @@
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            User user = LoadDeveloper();
-            LoginUser(user.Email);
-            return;
-
             if (!HasEnteredDetails)
             {
                 return;
