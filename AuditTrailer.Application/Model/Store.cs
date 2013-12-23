@@ -13,6 +13,8 @@ namespace AuditTrailer.Application.Model
         public TimeSpan? OpeningStartTime { get; set; }
         public TimeSpan? OpeningEndTime { get; set; }
         public bool IsOnlineStore { get; set; }
+        public int PackagingRating { get; set;}
+        public string Notes { get; set; }
         public override string ToString()
         {
             return Name;

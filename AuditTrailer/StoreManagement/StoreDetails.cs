@@ -75,5 +75,11 @@ namespace AuditTrailer.StoreManagement
         	this.Text += store.IsOnlineStore ? " " + store.Name : " " + store.Name + " - " + store.Location;
         	isOnlineStoreCheckBox.Checked = store.IsOnlineStore;
         }
+        
+        void ViewNotesButtonClick(object sender, EventArgs e)
+        {
+        	var detailsForm = new StoreNotes(LoggedInUser, store);
+        	detailsForm.Show();
+        }
     }
 }

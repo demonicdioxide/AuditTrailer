@@ -112,6 +112,10 @@
     <Compile Include="StoreManagement\StoreDetails.Designer.cs">
       <DependentUpon>StoreDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="StoreManagement\StoreNotes.cs" />
+    <Compile Include="StoreManagement\StoreNotes.Designer.cs">
+      <DependentUpon>StoreNotes.cs</DependentUpon>
+    </Compile>
     <Compile Include="TripManagement\AddTrip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StoreManagement\StoreDetails.resx">
       <DependentUpon>StoreDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StoreManagement\StoreNotes.resx">
+      <DependentUpon>StoreNotes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TripManagement\AddTrip.resx">
       <DependentUpon>AddTrip.cs</DependentUpon>

@@ -104,6 +104,10 @@ namespace AuditTrailer.Application.Managers
                 var openingTimeEnd = reader["CommonOpeningTimeEnd"];
                 store.OpeningEndTime = string.IsNullOrEmpty(openingTimeEnd.ToString()) ? null : (TimeSpan?)DateTime.Parse(openingTimeEnd.ToString()).TimeOfDay;
                 store.IsOnlineStore = bool.Parse(reader["IsOnlineStore"].ToString());
+                store.Notes = reader["Notes"].ToString();
+                int defaultRating = 0;
+                var rating = reader["PackagingRating"];
+                store.PackagingRating = string.IsNullOrEmpty(rating.ToString()) ? defaultRating : int.Parse(rating.ToString());
                 listOfStores.Add(store);
             }
 
@@ -124,7 +128,7 @@ namespace AuditTrailer.Application.Managers
             }
 
             commandText = @"INSERT INTO Store
-                            SELECT @StoreID, @Name, @Location, @OpeningStartTime, @OpeningEndTime, @IsOnlineStore";
+                            SELECT @StoreID, @Name, @Location, @OpeningStartTime, @OpeningEndTime, @IsOnlineStore, @PackagingRating, @Notes";
             command = connection.CreateCommand(commandText);
             command.Parameters.AddWithValue("@StoreID", lastID + 1);
             command.Parameters.AddWithValue("@Name", store.Name);
@@ -132,6 +136,8 @@ namespace AuditTrailer.Application.Managers
             command.Parameters.AddWithValue("@OpeningStartTime", store.OpeningStartTime);
             command.Parameters.AddWithValue("@OpeningEndTime", store.OpeningEndTime);
             command.Parameters.AddWithValue("@IsOnlineStore", store.IsOnlineStore);
+            command.Parameters.AddWithValue("@PackagingRating", store.PackagingRating);
+            command.Parameters.AddWithValue("@Notes", store.Notes);
             int numberAffected = command.ExecuteNonQuery();
             if (numberAffected != 1)
             {

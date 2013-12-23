@@ -35,6 +35,8 @@ namespace AuditTrailer.StoreManagement
             store.OpeningStartTime = startTimeTextBox.Enabled ? (TimeSpan?)TimeSpan.Parse(startTimeTextBox.Text) : null;
             store.OpeningEndTime = endTextBox.Enabled ? (TimeSpan?)TimeSpan.Parse(endTextBox.Text) : null;
             store.IsOnlineStore = isOnlineStoreCheckBox.Checked;
+            store.Notes = notesTextBox.Text;
+            store.PackagingRating = (int)packagingRatingUpDownBox.Value;
             _collectionManager.AddStore(store);
             MessageBox.Show("Successfully added store!");
             ClearStates();
@@ -47,6 +49,8 @@ namespace AuditTrailer.StoreManagement
         	isOnlineStoreCheckBox.Checked = false;
         	endTextBox.Text = string.Empty;
         	startTimeTextBox.Text = string.Empty;
+        	packagingRatingUpDownBox.Value = 0;
+        	notesTextBox.Text = string.Empty;
         }
         
         void IsOnlineStoreCheckBoxCheckedChanged(object sender, EventArgs e)
@@ -56,14 +60,23 @@ namespace AuditTrailer.StoreManagement
         		locationTextBox.Enabled = false;
         		startTimeTextBox.Enabled = false;
         		endTextBox.Enabled = false;
+        		packagingRatingUpDownBox.Enabled = true;
         	}
         	else
         	{
         		locationTextBox.Enabled = true;
         		startTimeTextBox.Enabled = true;
         		endTextBox.Enabled = true;	
+        		packagingRatingUpDownBox.Enabled = false;
+        		packagingRatingUpDownBox.Value = 0;
+
         	}
 
+        }
+        
+        void AddStoreFormLoad(object sender, EventArgs e)
+        {
+        	packagingRatingUpDownBox.Enabled = false;
         }
     }
 }

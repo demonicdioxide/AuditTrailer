@@ -38,6 +38,13 @@
         	this.label4 = new System.Windows.Forms.Label();
         	this.endTextBox = new System.Windows.Forms.MaskedTextBox();
         	this.isOnlineStoreCheckBox = new System.Windows.Forms.CheckBox();
+        	this.extraDetailsGroupBox = new System.Windows.Forms.GroupBox();
+        	this.packagingRatingUpDownBox = new System.Windows.Forms.NumericUpDown();
+        	this.label6 = new System.Windows.Forms.Label();
+        	this.notesTextBox = new System.Windows.Forms.TextBox();
+        	this.label5 = new System.Windows.Forms.Label();
+        	this.extraDetailsGroupBox.SuspendLayout();
+        	((System.ComponentModel.ISupportInitialize)(this.packagingRatingUpDownBox)).BeginInit();
         	this.SuspendLayout();
         	// 
         	// submitButton
@@ -129,11 +136,56 @@
         	this.isOnlineStoreCheckBox.UseVisualStyleBackColor = true;
         	this.isOnlineStoreCheckBox.CheckedChanged += new System.EventHandler(this.IsOnlineStoreCheckBoxCheckedChanged);
         	// 
+        	// extraDetailsGroupBox
+        	// 
+        	this.extraDetailsGroupBox.Controls.Add(this.packagingRatingUpDownBox);
+        	this.extraDetailsGroupBox.Controls.Add(this.label6);
+        	this.extraDetailsGroupBox.Controls.Add(this.notesTextBox);
+        	this.extraDetailsGroupBox.Controls.Add(this.label5);
+        	this.extraDetailsGroupBox.Location = new System.Drawing.Point(279, 6);
+        	this.extraDetailsGroupBox.Name = "extraDetailsGroupBox";
+        	this.extraDetailsGroupBox.Size = new System.Drawing.Size(384, 208);
+        	this.extraDetailsGroupBox.TabIndex = 10;
+        	this.extraDetailsGroupBox.TabStop = false;
+        	this.extraDetailsGroupBox.Text = "Extra details:";
+        	// 
+        	// packagingRatingUpDownBox
+        	// 
+        	this.packagingRatingUpDownBox.Location = new System.Drawing.Point(113, 128);
+        	this.packagingRatingUpDownBox.Name = "packagingRatingUpDownBox";
+        	this.packagingRatingUpDownBox.Size = new System.Drawing.Size(120, 20);
+        	this.packagingRatingUpDownBox.TabIndex = 3;
+        	// 
+        	// label6
+        	// 
+        	this.label6.Location = new System.Drawing.Point(7, 130);
+        	this.label6.Name = "label6";
+        	this.label6.Size = new System.Drawing.Size(100, 23);
+        	this.label6.TabIndex = 2;
+        	this.label6.Text = "Packaging Rating:";
+        	// 
+        	// notesTextBox
+        	// 
+        	this.notesTextBox.Location = new System.Drawing.Point(113, 17);
+        	this.notesTextBox.Multiline = true;
+        	this.notesTextBox.Name = "notesTextBox";
+        	this.notesTextBox.Size = new System.Drawing.Size(251, 92);
+        	this.notesTextBox.TabIndex = 1;
+        	// 
+        	// label5
+        	// 
+        	this.label5.Location = new System.Drawing.Point(7, 20);
+        	this.label5.Name = "label5";
+        	this.label5.Size = new System.Drawing.Size(100, 23);
+        	this.label5.TabIndex = 0;
+        	this.label5.Text = "Notes:";
+        	// 
         	// AddStoreForm
         	// 
         	this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         	this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        	this.ClientSize = new System.Drawing.Size(284, 226);
+        	this.ClientSize = new System.Drawing.Size(685, 240);
+        	this.Controls.Add(this.extraDetailsGroupBox);
         	this.Controls.Add(this.isOnlineStoreCheckBox);
         	this.Controls.Add(this.label4);
         	this.Controls.Add(this.endTextBox);
@@ -146,9 +198,18 @@
         	this.Controls.Add(this.submitButton);
         	this.Name = "AddStoreForm";
         	this.Text = "Add new store";
+        	this.Load += new System.EventHandler(this.AddStoreFormLoad);
+        	this.extraDetailsGroupBox.ResumeLayout(false);
+        	this.extraDetailsGroupBox.PerformLayout();
+        	((System.ComponentModel.ISupportInitialize)(this.packagingRatingUpDownBox)).EndInit();
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox notesTextBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown packagingRatingUpDownBox;
+        private System.Windows.Forms.GroupBox extraDetailsGroupBox;
 
         #endregion
 
