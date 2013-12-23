@@ -48,16 +48,12 @@
             	MessageBox.Show("Incorrect login details");
             	emailTextBox.Text = string.Empty;
             	passwordTextBox.Text = string.Empty;
+            	return;
             }
 
             LoginUser(emailTextBox.Text);
         }
-
-        private User LoadDeveloper()
-        {
-            return securityManager.GetUserByEmail("arran.huxtable@gmail.com");
-        }
-
+        
         private void LoginUser(string text)
         {
             var user = securityManager.GetUserByEmail(text);
