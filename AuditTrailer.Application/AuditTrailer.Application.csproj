@@ -43,6 +43,9 @@
     <Reference Include="Common.Logging">
       <HintPath>..\..\..\..\Quartz.NET-2.2.1\bin\3.5\release\Quartz\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Nustache.Core">
+      <HintPath>..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz">
       <HintPath>..\..\..\..\Quartz.NET-2.2.1\bin\3.5\release\Quartz\Quartz.dll</HintPath>
     </Reference>
@@ -65,6 +68,9 @@
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnector.cs" />
     <Compile Include="DotNetFourEmulation\Tuple.cs" />
+    <Compile Include="Email\EmailSender.cs" />
+    <Compile Include="Email\Templating\Templator.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Managers\BoxSizeManager.cs" />
     <Compile Include="Managers\CollectionManager.cs" />
     <Compile Include="Managers\ReminderManager.cs" />
@@ -86,6 +92,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DotNetFourEmulation" />
+    <Folder Include="Email" />
+    <Folder Include="Email\Templating" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Email\Templating\template.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

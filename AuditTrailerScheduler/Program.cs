@@ -11,7 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using AuditTrailer.Application;
+using AuditTrailer.Application.Authorisation;
 using AuditTrailer.Application.Database;
+using AuditTrailer.Application.Email;
+using AuditTrailer.Application.Email.Templating;
 using AuditTrailer.Application.Managers;
 using AuditTrailer.Application.Model;
 
@@ -20,6 +23,20 @@ namespace AuditTrailerScheduler
 	class Program
 	{
 		public static void Main(string[] args)
+		{
+			string firstArgument = args.First();
+			if (firstArgument.Equals("reminderemail", StringComparison.OrdinalIgnoreCase))
+			{
+				SendReminderEmail(args.ElementAt(1));
+			}
+			else
+			{
+				EnterLogEntryInformation();
+			}
+			Environment.Exit(0); // successful exit.
+		}
+		
+		private static void EnterLogEntryInformation()
 		{
 			CollectionManager _collectionManager = new CollectionManager(DatabaseConnector.Create());
 			ReminderManager _reminderManager = new ReminderManager();
@@ -56,6 +73,30 @@ namespace AuditTrailerScheduler
 			foreach (var logEntry in logEntries) 
 			{
 				_reminderManager.InsertMedicineLogEntry(logEntry);
+			}
+		}
+		
+		private static void SendReminderEmail(string userEmail)
+		{
+			ReminderManager _reminderManager = new ReminderManager();
+			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
+			User user = _securityManager.GetUserByEmail(userEmail);
+			var reminderInformation = _reminderManager.GetMedicineReminderInformation(user);
+			DateTime closetDate = reminderInformation.Min(d => d.Third);
+			int daysOffset = 2;
+			var difference = DateTime.Now.Subtract(closetDate.AddDays(-7));
+			if (difference.Days.Between(-2, 2, true))
+			{
+				EmailSender sender = new EmailSender
+				{
+					Recipient = userEmail
+				};
+				Templator templator = new Templator
+				{
+					ReminderDate = closetDate.AddDays(-7)
+				};
+				string message = templator.RenderToEmailString();
+				sender.SendEmail(message);
 			}
 		}
 	}

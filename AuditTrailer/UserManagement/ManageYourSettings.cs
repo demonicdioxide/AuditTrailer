@@ -76,7 +76,9 @@ namespace AuditTrailer.UserManagement
 				if (passwordInFirstBox.Equals(passwordInConfirmBox))
 				{
 					
-					PasswordStrengthValidationResult result = SecurityManager.DoesPasswordMeetRequirements(passwordInFirstBox);
+					bool isGlobalAdministrator = LoggedInUser.Role == RoleEnum.GlobalAdministrator;
+					// global administrators are exempt from the password strength checker
+					PasswordStrengthValidationResult result = isGlobalAdministrator ? GetSuccessfulResult() : SecurityManager.DoesPasswordMeetRequirements(passwordInFirstBox);
 					
 					if (result.PasswordStrongEnough) 
 					{
@@ -114,6 +116,15 @@ namespace AuditTrailer.UserManagement
 			
 				}
         	}
+        }
+        
+        private PasswordStrengthValidationResult GetSuccessfulResult()
+        {
+        	return new PasswordStrengthValidationResult
+        	{
+        		PasswordStrongEnough = true,
+        		ValidationErrors = new List<string>()
+        	};
         }
     }
 }

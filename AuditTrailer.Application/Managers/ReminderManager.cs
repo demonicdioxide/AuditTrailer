@@ -38,10 +38,10 @@ namespace AuditTrailer.Application.Managers
 		
 		public IEnumerable<Tuple<string, int, DateTime>> GetMedicineReminderInformation(User user)
 		{
-			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) - SUM(ML.HowManyTaken) As [Amount Of Tablets], M.Name As [MedicineName] FROM Trip T
+			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) - SUM(IFNULL(ML.HowManyTaken, 0)) As [Amount Of Tablets], M.Name As [MedicineName] FROM Trip T
 													JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
 													JOIN BoxSize B ON B.BoxSizeID = T.BoxSizeID
-													JOIN MedicineLog ML ON ML.MedicineID = T.[BoughtMedicineID]
+													LEFT JOIN MedicineLog ML ON ML.MedicineID = T.[BoughtMedicineID]
 													WHERE T.UserID = @UserID
 													GROUP BY M.PainRelieverID");
 			command.Parameters.AddWithValue("@UserID", user.ID);
@@ -72,10 +72,15 @@ namespace AuditTrailer.Application.Managers
 			using (var reader = lastIDCommand.ExecuteReader())
 			{
 				reader.Read();
-				lastID = int.Parse(reader["MedicineLogID"].ToString());
+				if (reader.HasRows) 
+				{
+					lastID = int.Parse(reader["MedicineLogID"].ToString());
+				}
+
 			}
 			
-			command.Parameters.AddWithValue("@LastID", lastID++);
+			lastID = lastID + 1;
+			command.Parameters.AddWithValue("@LastID", lastID);
 			command.Parameters.AddWithValue("@MedicineID", entry.Medicine.ID);
 			command.Parameters.AddWithValue("@AmountTaken", entry.AmountTaken);
 			command.Parameters.AddWithValue("@DateTaken", entry.DateTaken);
