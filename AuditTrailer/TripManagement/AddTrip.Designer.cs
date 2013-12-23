@@ -42,12 +42,14 @@
         	this.label5 = new System.Windows.Forms.Label();
         	this.boxSizeDropDown = new System.Windows.Forms.ComboBox();
         	this.onlineToolTip = new System.Windows.Forms.ToolTip(this.components);
+        	this.label6 = new System.Windows.Forms.Label();
+        	this.notesTextBox = new System.Windows.Forms.TextBox();
         	((System.ComponentModel.ISupportInitialize)(this.amountBoughtNumericTextBox)).BeginInit();
         	this.SuspendLayout();
         	// 
         	// btnSubmit
         	// 
-        	this.btnSubmit.Location = new System.Drawing.Point(388, 99);
+        	this.btnSubmit.Location = new System.Drawing.Point(390, 202);
         	this.btnSubmit.Name = "btnSubmit";
         	this.btnSubmit.Size = new System.Drawing.Size(107, 64);
         	this.btnSubmit.TabIndex = 0;
@@ -67,7 +69,7 @@
         	// label1
         	// 
         	this.label1.AutoSize = true;
-        	this.label1.Location = new System.Drawing.Point(36, 14);
+        	this.label1.Location = new System.Drawing.Point(28, 9);
         	this.label1.Name = "label1";
         	this.label1.Size = new System.Drawing.Size(35, 13);
         	this.label1.TabIndex = 2;
@@ -85,7 +87,7 @@
         	// label2
         	// 
         	this.label2.AutoSize = true;
-        	this.label2.Location = new System.Drawing.Point(12, 48);
+        	this.label2.Location = new System.Drawing.Point(12, 49);
         	this.label2.Name = "label2";
         	this.label2.Size = new System.Drawing.Size(80, 13);
         	this.label2.TabIndex = 4;
@@ -110,7 +112,7 @@
         	// label3
         	// 
         	this.label3.AutoSize = true;
-        	this.label3.Location = new System.Drawing.Point(2, 81);
+        	this.label3.Location = new System.Drawing.Point(12, 81);
         	this.label3.Name = "label3";
         	this.label3.Size = new System.Drawing.Size(90, 13);
         	this.label3.TabIndex = 7;
@@ -119,7 +121,7 @@
         	// label4
         	// 
         	this.label4.AutoSize = true;
-        	this.label4.Location = new System.Drawing.Point(4, 145);
+        	this.label4.Location = new System.Drawing.Point(12, 145);
         	this.label4.Name = "label4";
         	this.label4.Size = new System.Drawing.Size(83, 13);
         	this.label4.TabIndex = 8;
@@ -135,7 +137,7 @@
         	// label5
         	// 
         	this.label5.AutoSize = true;
-        	this.label5.Location = new System.Drawing.Point(12, 117);
+        	this.label5.Location = new System.Drawing.Point(28, 117);
         	this.label5.Name = "label5";
         	this.label5.Size = new System.Drawing.Size(51, 13);
         	this.label5.TabIndex = 11;
@@ -153,11 +155,29 @@
         	// 
         	this.onlineToolTip.Popup += new System.Windows.Forms.PopupEventHandler(this.ToolTip1Popup);
         	// 
+        	// label6
+        	// 
+        	this.label6.Location = new System.Drawing.Point(28, 178);
+        	this.label6.Name = "label6";
+        	this.label6.Size = new System.Drawing.Size(74, 25);
+        	this.label6.TabIndex = 13;
+        	this.label6.Text = "Notes:";
+        	// 
+        	// notesTextBox
+        	// 
+        	this.notesTextBox.Location = new System.Drawing.Point(113, 175);
+        	this.notesTextBox.Multiline = true;
+        	this.notesTextBox.Name = "notesTextBox";
+        	this.notesTextBox.Size = new System.Drawing.Size(200, 91);
+        	this.notesTextBox.TabIndex = 14;
+        	// 
         	// AddTrip
         	// 
         	this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         	this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        	this.ClientSize = new System.Drawing.Size(509, 188);
+        	this.ClientSize = new System.Drawing.Size(509, 278);
+        	this.Controls.Add(this.notesTextBox);
+        	this.Controls.Add(this.label6);
         	this.Controls.Add(this.boxSizeDropDown);
         	this.Controls.Add(this.label5);
         	this.Controls.Add(this.amountBoughtNumericTextBox);
@@ -177,6 +197,8 @@
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }
+        private System.Windows.Forms.TextBox notesTextBox;
+        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ToolTip onlineToolTip;
 
         #endregion

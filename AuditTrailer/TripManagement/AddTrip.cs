@@ -92,6 +92,30 @@ namespace AuditTrailer.TripManagement
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+        	if (dropdownStores.SelectedItem == null || _lastSelectedStore == null) 
+        	{
+        		MessageBox.Show("You need to select a store!");
+        		return;
+        	}
+        	
+        	if (dateOccureddtPicker.Value.Equals(DateTime.MinValue))
+        	{
+        		MessageBox.Show("You should enter in a date that is valid!");
+        		return;
+        	}
+        	
+        	if (medicineComboBox.SelectedItem == null || _lastSelectedMedicine == null) 
+        	{
+        		MessageBox.Show("You need to select a medicine!");
+        		return;
+        	}
+        	
+        	if (boxSizeDropDown.SelectedItem == null) 
+        	{
+        		MessageBox.Show("You must select a box size!");
+        		return;
+        	}
+        	
             var trip = new Trip();
             trip.User = LoggedInUser;
             trip.DateOccurred = dateOccureddtPicker.Value;
@@ -99,6 +123,7 @@ namespace AuditTrailer.TripManagement
             trip.MedicineDetails = new Tuple<string, int, int>(
                 _lastSelectedMedicine.Name, int.Parse(boxSizeDropDown.SelectedItem.ToString()), (int)amountBoughtNumericTextBox.Value);
             trip.PainRelieverBought = _lastSelectedMedicine;
+            trip.Notes = notesTextBox.Text;
             _tripManager.AddTrip(trip);
             MessageBox.Show("Successfully added trip!");
         }

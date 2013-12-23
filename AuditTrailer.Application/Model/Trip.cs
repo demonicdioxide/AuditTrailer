@@ -14,7 +14,7 @@ namespace AuditTrailer.Application.Model
         public Tuple<string, int, int> MedicineDetails { get; set; }
 
         public PainReliever PainRelieverBought { get; set; }
-
+        public string Notes { get; set; }
         public string MedicineBought
         {
             get

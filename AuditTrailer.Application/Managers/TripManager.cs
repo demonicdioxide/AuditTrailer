@@ -48,7 +48,7 @@ namespace AuditTrailer.Application.Managers
 
             command = connection.CreateCommand(
                 @"INSERT INTO Trip 
-                    SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, @UserID");
+                    SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, @UserID, @Notes");
             command.Parameters.AddWithValue("@LastID", lastID + 1);
             command.Parameters.AddWithValue("@DateOccurred", trip.DateOccurred);
             command.Parameters.AddWithValue("@BoxSizeBought", medicineBoxSize.BoxSizeID);
@@ -56,6 +56,7 @@ namespace AuditTrailer.Application.Managers
             command.Parameters.AddWithValue("@MedicineID", trip.PainRelieverBought.ID);
             command.Parameters.AddWithValue("@StoreID", trip.Store.ID);
             command.Parameters.AddWithValue("@UserID", trip.User.ID);
+            command.Parameters.AddWithValue("@Notes", trip.Notes);
             int numberAdded = command.ExecuteNonQuery();
             if (numberAdded != 1)
             {
@@ -86,7 +87,7 @@ namespace AuditTrailer.Application.Managers
                     trip.MedicineDetails = new Tuple<string, int, int>(reader["Name"].ToString(),
                         int.Parse(reader["BoxSize"].ToString()), int.Parse(reader["AmountOfBoxesBought"].ToString()));
                     trip.DateOccurred = DateTime.Parse(reader["DateOccurred"].ToString());
-                    
+                    trip.Notes = string.IsNullOrEmpty(reader["Notes"].ToString()) ? string.Empty : reader["Notes"].ToString();
                     trips.Add(trip);
                 }
             }
