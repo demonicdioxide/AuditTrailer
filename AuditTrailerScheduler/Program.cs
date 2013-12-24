@@ -106,7 +106,7 @@ namespace AuditTrailerScheduler
 				{
 					ReminderDate = closetDate.AddDays(-7)
 				};
-				string message = templator.RenderToEmailString();
+				string message = templator.RenderReminderEmailToString();
 				sender.SendEmail(message);
 			}
 		}

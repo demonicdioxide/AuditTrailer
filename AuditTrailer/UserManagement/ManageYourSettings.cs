@@ -32,15 +32,7 @@ namespace AuditTrailer.UserManagement
         {
         	reminderRunOutDateLabel.Visible = false;
         	roleLabel.Text = SecurityManager.GetRoleDisplayName(LoggedInUser.Role);
-        	try
-        	{
-        	_runOutMappings = _reminderManager.GetMedicineReminderInformation(LoggedInUser).ToDictionary(t => t.First, t => t.Third);	
-        	
-        	}
-        	catch (Exception ex)
-        	{
-        		throw ex;
-        	}
+        	_runOutMappings = _reminderManager.GetMedicineReminderInformation(LoggedInUser).ToDictionary(t => t.First, t => t.Third);
         	var medicines = _collectionManager.GetAllPainReliefMedicine().Where(r => !r.IsPrescriptionOnly);
         	medicineComboBox.DataSource = medicines.Select(m => m.Name).ToList();
         	medicineGroupBox.Text += " - " + _runOutMappings.Min(medicine => medicine.Value).AddDays(-7).ToLongDateString();

@@ -33,6 +33,11 @@ namespace AuditTrailer.Forms
 
         public AuthorisedBaseForm(User loggedInUser)
         {
+        	if (loggedInUser == null) 
+        	{
+        		throw new Exception("There appears to be no logged in user!");
+        	}
+        	
             LoggedInUser = loggedInUser;
             //LoadForm();
         }

@@ -37,13 +37,14 @@
         	this.passwordTextBox = new System.Windows.Forms.TextBox();
         	this.emailLabel = new System.Windows.Forms.Label();
         	this.passwordLabel = new System.Windows.Forms.Label();
+        	this.resetPasswordButton = new System.Windows.Forms.Button();
         	this.SuspendLayout();
         	// 
         	// loginButton
         	// 
-        	this.loginButton.Location = new System.Drawing.Point(74, 71);
+        	this.loginButton.Location = new System.Drawing.Point(74, 72);
         	this.loginButton.Name = "loginButton";
-        	this.loginButton.Size = new System.Drawing.Size(150, 57);
+        	this.loginButton.Size = new System.Drawing.Size(107, 38);
         	this.loginButton.TabIndex = 0;
         	this.loginButton.Text = "Submit";
         	this.loginButton.UseVisualStyleBackColor = true;
@@ -82,21 +83,34 @@
         	this.passwordLabel.TabIndex = 4;
         	this.passwordLabel.Text = "Password:";
         	// 
+        	// resetPasswordButton
+        	// 
+        	this.resetPasswordButton.Location = new System.Drawing.Point(187, 72);
+        	this.resetPasswordButton.Name = "resetPasswordButton";
+        	this.resetPasswordButton.Size = new System.Drawing.Size(107, 38);
+        	this.resetPasswordButton.TabIndex = 5;
+        	this.resetPasswordButton.Text = "Forgotten Password?";
+        	this.resetPasswordButton.UseVisualStyleBackColor = true;
+        	this.resetPasswordButton.Click += new System.EventHandler(this.ResetPasswordButtonClick);
+        	// 
         	// LoginForm
         	// 
         	this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         	this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        	this.ClientSize = new System.Drawing.Size(302, 145);
+        	this.ClientSize = new System.Drawing.Size(335, 125);
+        	this.Controls.Add(this.resetPasswordButton);
         	this.Controls.Add(this.passwordLabel);
         	this.Controls.Add(this.emailLabel);
         	this.Controls.Add(this.passwordTextBox);
         	this.Controls.Add(this.emailTextBox);
         	this.Controls.Add(this.loginButton);
+        	this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
         	this.Name = "LoginForm";
         	this.Text = "Login to the Audit Trailer";
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }
+        private System.Windows.Forms.Button resetPasswordButton;
 
         #endregion
 

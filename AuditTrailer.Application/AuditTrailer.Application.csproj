@@ -99,7 +99,10 @@
     <Folder Include="Email\Templating" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Email\Templating\template.htm">
+    <Content Include="Email\Templating\remindertemplate.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templating\forgottenpasswordtemplate.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.config">

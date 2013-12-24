@@ -1,4 +1,9 @@
-﻿namespace AuditTrailer.Authorisation
+﻿using System.Threading;
+using AuditTrailer.Application.Database;
+using AuditTrailer.Application.Email;
+using AuditTrailer.Application.Email.Templating;
+
+namespace AuditTrailer.Authorisation
 {
     using System;
     using System.Collections.Generic;
@@ -18,8 +23,8 @@
 
     public partial class LoginForm : BaseForm
     {
-
-        private SecurityManager securityManager = new SecurityManager(DatabaseConnector.Create());
+    	private int attemptedLogins;
+        private SecurityManager securityManager;
 
         private bool HasEnteredDetails
         {
@@ -33,21 +38,40 @@
         protected override void LoadForm()
         {
             InitializeComponent();
+            securityManager = new SecurityManager(DatabaseConnector.Create());
+            attemptedLogins = 0;
         }
 
         private void loginButton_Click(object sender, EventArgs e)
         {
             if (!HasEnteredDetails)
             {
+            	MessageBox.Show("You must enter in your username and password to login!");
                 return;
             }
 
-            var securityManager = new SecurityManager(DatabaseConnector.Create());
             if (!securityManager.CanUserLogin(emailTextBox.Text, passwordTextBox.Text))
             {
-            	MessageBox.Show("Incorrect login details");
-            	emailTextBox.Text = string.Empty;
+            	// unneeded but defensive check
+            	if (securityManager.AmountOfLoginAttemptsAllowed <= attemptedLogins) 
+            	{
+            		MessageBox.Show("You have entered incorrect details too many time! You are blocked from logging in!");
+            		loginButton.Enabled = false;
+            		return;
+            	}
+            	
+            	attemptedLogins++;
+            	MessageBox.Show("Incorrect login details, you have: " + (securityManager.AmountOfLoginAttemptsAllowed - attemptedLogins).ToString() + " attempts left!");
             	passwordTextBox.Text = string.Empty;
+            	
+            	
+            	if (securityManager.AmountOfLoginAttemptsAllowed <= attemptedLogins) 
+            	{
+            		MessageBox.Show("You have entered incorrect details too many time! You are blocked from logging in!");
+            		loginButton.Enabled = false;
+            		return;
+            	}
+            	
             	return;
             }
 
@@ -60,6 +84,40 @@
             Hide();
             var mainForm = new MainForm(user);
             mainForm.Show();
+        }
+        
+        void ResetPasswordButtonClick(object sender, EventArgs e)
+        {
+        	
+        	if (string.IsNullOrEmpty(emailTextBox.Text))
+        	{
+        		MessageBox.Show("You must enter in your email address into the email text box to begin with the reset password process!");
+        		return;
+        	}
+        	
+        	var dialogResult = MessageBox.Show("Would you like a password reset code to be emailed to you?", "Password reset", MessageBoxButtons.YesNo);
+        	if (dialogResult == DialogResult.Yes) 
+        	{
+        		User user = securityManager.GetUserByEmail(emailTextBox.Text.Trim());
+        		securityManager.DeleteAllForgottenPasswordRequestsForUser(user);
+        		string code = securityManager.InsertForgottenPasswordRequestForUser(user);
+        		var templator = new Templator { ForgottenPasswordCode = code };
+        		string message = templator.RenderForgottenPasswordEmailToString();
+        		var emailSender = new EmailSender { Recipient = user.Email };
+        		
+        		// send it async so we don't block the thread.
+        		emailSender.SendEmail(message);
+        		
+        		passwordTextBox.Text = string.Empty;
+        		var resetConfirmationForm = new ResetPasswordConfirmation(user.Email);
+        		resetConfirmationForm.ShowDialog();
+        		if (resetConfirmationForm.WasResetSuccessful) 
+        		{
+        			attemptedLogins = 0;
+        			loginButton.Enabled = true;
+        		}
+        		
+        	}
         }
     }
 }

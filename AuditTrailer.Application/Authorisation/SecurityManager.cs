@@ -15,11 +15,75 @@
     /// </summary>
     public class SecurityManager
     {
+    	private readonly Random _rng = new Random();
+		private const string _chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    	
         private DatabaseConnection connection;
+        
+        public int AmountOfLoginAttemptsAllowed
+        {
+        	get
+        	{
+        		return 5;
+        	}
+        }
 
         public SecurityManager(DatabaseConnection connection)
         {
             this.connection = connection;
+        }
+        
+        public string InsertForgottenPasswordRequestForUser(User user)
+        {
+        	var command = connection.CreateCommand(@"INSERT INTO ForgottenPasswordRequest
+        											SELECT @UserID, @Code, 0");
+        	string code = GenerateForgottenPasswordCodeForUser(user);
+        	command.Parameters.AddWithValue("@UserID", user.ID);
+        	command.Parameters.AddWithValue("@Code", code);
+        	int affectedRows = command.ExecuteNonQuery();
+        	if (affectedRows != 1) 
+        	{
+        		throw new Exception();
+        	}
+        	
+        	return code;
+        	
+        }
+        
+        private string GenerateForgottenPasswordCodeForUser(User user)
+        {
+        	int size = 10;
+    	    char[] buffer = new char[size];
+
+		    for (int i = 0; i < size; i++)
+		    {
+		        buffer[i] = _chars[_rng.Next(_chars.Length)];
+		    }
+		    return new string(buffer);
+        }
+        
+        public void DeleteAllForgottenPasswordRequestsForUser(User user)
+        {
+        	var command = connection.CreateCommand(@"UPDATE ForgottenPasswordRequest SET Deleted = 1 WHERE UserID = @UserID");
+        	command.Parameters.AddWithValue("@UserID", user.ID);
+        	command.ExecuteNonQuery();
+        }
+        
+        public string GetForgottenPasswordCodeForUser(User user)
+        {
+        	var command = connection.CreateCommand(@"SELECT Code FROM ForgottenPasswordRequest WHERE UserID = @UserID AND Deleted = @Deleted");
+        	command.Parameters.AddWithValue("@UserID", user.ID);
+        	command.Parameters.AddWithValue("@Deleted", false);
+        	using (var reader = command.ExecuteReader())
+        	{
+        		reader.Read();
+        		return reader["Code"].ToString();
+        	}
+        }
+        
+        public bool IsForgottenPasswordCodeCorrect(User user, string code)
+        {
+        	return GetForgottenPasswordCodeForUser(user).Equals(code);
         }
 
         public bool CanUserLogin(string email, string password)

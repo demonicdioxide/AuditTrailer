@@ -22,13 +22,25 @@ namespace AuditTrailer.Application.Email.Templating
 	{
 		public DateTime ReminderDate { get; set; }
 		
-		public string RenderToEmailString()
+		public string ForgottenPasswordCode { get; set; }
+		
+		public string RenderReminderEmailToString()
 		{
 			Dictionary<string, string> data = new Dictionary<string, string>
 			{
 				{ "RunOutDate", ReminderDate.ToLongDateString() }
 			};
-			string path = Path.Combine(Path.Combine(Environment.CurrentDirectory, "Email"), Path.Combine("Templating", "template.htm"));
+			string path = Path.Combine(Path.Combine(Environment.CurrentDirectory, "Email"), Path.Combine("Templating", "remindertemplate.htm"));
+			return Render.FileToString(path, data, RenderContextBehaviour.GetDefaultRenderContextBehaviour());
+		}
+		
+		public string RenderForgottenPasswordEmailToString()
+		{
+			Dictionary<string, string> data = new Dictionary<string, string>
+			{
+				{ "ForgottenPasswordCode", ForgottenPasswordCode }
+			};
+			string path = Path.Combine(Path.Combine(Environment.CurrentDirectory, "Email"), Path.Combine("Templating", "forgottenpasswordtemplate.htm"));
 			return Render.FileToString(path, data, RenderContextBehaviour.GetDefaultRenderContextBehaviour());
 		}
 	}

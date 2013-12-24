@@ -41,5 +41,27 @@ namespace AuditTrailer.Application.Email
 			}
 			
 		}
+		
+		public void SendEmailAsync(string email)
+		{
+			var client = new SmtpClient();
+			
+			client.Host = "smtp.gmail.com";
+			client.Port = 587;
+			client.EnableSsl = true;
+			client.UseDefaultCredentials = false;
+			client.DeliveryMethod = SmtpDeliveryMethod.Network;
+			string username = ConfigurationManager.AppSettings["gmail.username"];
+			string password = ConfigurationManager.AppSettings["gmail.password"];
+			client.Credentials = new NetworkCredential(username, password);
+			using (var message = new MailMessage(username, Recipient))
+			{
+				message.From = new MailAddress(username, "Audit Trailer Reminder");
+				message.Subject = "Audit Trailer Reminder";
+				message.Body = email;
+				message.IsBodyHtml = true;
+				client.SendAsync(message, message);
+			}
+		}
 	}
 }

@@ -81,6 +81,10 @@
     <Compile Include="Authorisation\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Authorisation\ResetPasswordConfirmation.cs" />
+    <Compile Include="Authorisation\ResetPasswordConfirmation.Designer.cs">
+      <DependentUpon>ResetPasswordConfirmation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AuthorisedBaseForm.cs" />
     <Compile Include="Forms\AuthorisedBaseForm.Designer.cs">
       <DependentUpon>AuthorisedBaseForm.cs</DependentUpon>
@@ -133,6 +137,9 @@
     </Compile>
     <EmbeddedResource Include="Authorisation\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Authorisation\ResetPasswordConfirmation.resx">
+      <DependentUpon>ResetPasswordConfirmation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
