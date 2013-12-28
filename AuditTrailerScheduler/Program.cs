@@ -16,6 +16,7 @@ using AuditTrailer.Application.Authorisation;
 using AuditTrailer.Application.Database;
 using AuditTrailer.Application.Email;
 using AuditTrailer.Application.Email.Templating;
+using AuditTrailer.Application.Logging;
 using AuditTrailer.Application.Managers;
 using AuditTrailer.Application.Model;
 
@@ -52,6 +53,12 @@ namespace AuditTrailerScheduler
 		{
 			CollectionManager _collectionManager = new CollectionManager(DatabaseConnector.Create());
 			ReminderManager _reminderManager = new ReminderManager();
+			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
+			Log.Write("Before entering log entry...", LogLevel.Debug);
+			_reminderManager.GetMedicineReminderInformation(_securityManager.GetUserByEmail("arran.huxtable@gmail.com")).ToList().ForEach(a =>
+			                                                                                                                              {
+			                                                                                                                              	Log.Write(a.First + " has " + a.Second + " tablets " + " and runs out: " + a.Third.ToLongDateString(), LogLevel.Debug);
+			                                                                                                                              });
 			IEnumerable<PainReliever> medicines = _collectionManager.GetAllPainReliefMedicine().Where(p => !p.IsPrescriptionOnly);
 			PainReliever nurofenPlus = medicines.First(t => t.Name.Equals("Nurofen Plus"));
 			PainReliever solpadeineSoluble = medicines.First(t => t.Name.Equals("Solpadeine Max Soluble Tablets"));
@@ -86,6 +93,11 @@ namespace AuditTrailerScheduler
 			{
 				_reminderManager.InsertMedicineLogEntry(logEntry);
 			}
+			Log.Write("After entering log entry...", LogLevel.Debug);
+			_reminderManager.GetMedicineReminderInformation(_securityManager.GetUserByEmail("arran.huxtable@gmail.com")).ToList().ForEach(a =>
+			                                                                                                                              {
+			                                                                                                                              	Log.Write(a.First + " has " + a.Second + " tablets " + " and runs out: " + a.Third.ToLongDateString(), LogLevel.Debug);
+			                                                                                                                              });
 		}
 		
 		private static void SendReminderEmail(string userEmail)

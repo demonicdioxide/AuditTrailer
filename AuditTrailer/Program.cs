@@ -15,7 +15,7 @@ namespace AuditTrailer
     using AuditTrailer.TripManagement;
 
     using Application = System.Windows.Forms.Application;
-
+    using AuditTrailer.Application.Logging;
     static class Program
     {
         /// <summary>
@@ -24,18 +24,10 @@ namespace AuditTrailer
         [STAThread]
         static void Main()
         {
-        	LoggingConfiguration configuration = new LoggingConfiguration();
-        	FileTarget fileLog = new FileTarget();
-        	fileLog.FileName = @"${basedir}\log.txt";
-        	fileLog.Layout = "${date} ${message}";
-        	configuration.AddTarget("file", fileLog);
-        	configuration.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileLog));
-        	LogManager.Configuration = configuration;
-        	System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-        	var logger = LogManager.GetLogger("Static logger");
+			System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
         	AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs e) 
         	{
-        		logger.Log(LogLevel.Fatal, ((Exception)e.ExceptionObject).ToString());
+        		Log.WriteException(((Exception)e.ExceptionObject), "Unhandled exception");
         	};
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
