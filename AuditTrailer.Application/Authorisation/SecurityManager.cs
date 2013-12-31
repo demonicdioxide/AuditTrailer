@@ -167,5 +167,42 @@
                 return builder.ToString();
             }
         }
+        
+        public void UpdateUsersPassword(User user, string newPassword)
+        {
+        	var command = connection.CreateCommand(@"UPDATE User Set PasswordHash = @PasswordHash WHERE UserID = @UserID");
+        	command.Parameters.AddWithValue("@UserID", user.ID);
+        	string newPasswordHash = CreatePasswordHash(newPassword);
+        	command.Parameters.AddWithValue("@PasswordHash", newPasswordHash);
+        	int rows = command.ExecuteNonQuery();
+        	if (rows != 1) 
+        	{
+        		throw new SecurityException();
+        	}
+        }
+        
+        public PasswordStrengthValidationResult DoesPasswordMeetRequirements(string password)
+        {
+        	PasswordStrengthValidationResult result = new PasswordStrengthValidationResult();
+        	result.ValidationErrors = new List<string>();
+        	result.PasswordStrongEnough = false; // safety, assume it's not strong enough to begin with
+        	
+        	if (password.Length < 6) 
+        	{
+        		result.ValidationErrors.Add("Password is less than 6 characters long");
+        	}
+        	
+        	if (!password.Any(c => char.IsDigit(c)))
+        	{
+        		result.ValidationErrors.Add("Password does not contain any numbers");
+        	}
+        	
+        	if (!password.Any(c => char.IsUpper(c)))
+        	{
+        		result.ValidationErrors.Add("Password does not contain an upper-case character");
+        	}
+        	
+        	return result;
+        }
     }
 }

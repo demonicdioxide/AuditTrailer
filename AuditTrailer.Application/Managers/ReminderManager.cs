@@ -65,7 +65,25 @@ namespace AuditTrailer.Application.Managers
 		
 		public void InsertMedicineLogEntry(MedicineLogEntry entry)
 		{
-			// needs doing
+			var command = _connection.CreateCommand(@"INSERT INTO MedicineLog
+													SELECT @LastID, @MedicineID, @AmountTaken, @DateTaken");
+			var lastIDCommand = _connection.CreateCommand("SELECT MedicineLogID FROM MedicineLog ORDER BY MedicineLogID DESC LIMIT 1");
+			int lastID = 0;
+			using (var reader = lastIDCommand.ExecuteReader())
+			{
+				reader.Read();
+				lastID = int.Parse(reader["MedicineLogID"].ToString());
+			}
+			
+			command.Parameters.AddWithValue("@LastID", lastID++);
+			command.Parameters.AddWithValue("@MedicineID", entry.Medicine.ID);
+			command.Parameters.AddWithValue("@AmountTaken", entry.AmountTaken);
+			command.Parameters.AddWithValue("@DateTaken", entry.DateTaken);
+			int affectedRecords = command.ExecuteNonQuery();
+			if (affectedRecords != 1) 
+			{
+				throw new Exception();
+			}
 		}
 		
 		

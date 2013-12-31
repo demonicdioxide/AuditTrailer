@@ -1,58 +1,45 @@
-﻿using AuditTrailer.UserManagement;
+﻿/*
+ * Created by SharpDevelop.
+ * User: Arran
+ * Date: 31/12/2013
+ * Time: 16:47
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+using AuditTrailer.Application.Model;
+using AuditTrailer.Forms;
+using AuditTrailer.StoreManagement;
+using AuditTrailer.TripManagement;
+using AuditTrailer.UserManagement;
+
 namespace AuditTrailer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.Linq;
-    using System.Text;
-    using System.Windows.Forms;
-    using StoreManagement;
-    using AuditTrailer.Application.Model;
-    using TripManagement;
-    using Forms;
-
-    public partial class MainForm : AuthorisedBaseForm
-    {
-
-        public MainForm(User user) : base(user)
+	/// <summary>
+	/// Description of MainForm.
+	/// </summary>
+	public partial class MainForm : AuthorisedBaseForm
+	{
+		
+		public MainForm(User user) : base(user)
         {
-        	this.Text += LoggedInUser.FullName;
+        	this.Text = "Logged in as: " + LoggedInUser.FullName;
         }
-
-        private void manageStoresToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        	var userSettingsForm = new ManageYourSettings(LoggedInUser);
-        	userSettingsForm.Show();
-        	
-            //var manageStoresForm = new ManageStores(LoggedInUser);
-            //manageStoresForm.Show();
-        }
-
-        protected override void LoadForm()
-        {
-            InitializeComponent();
-
-        }
-
-        private void addTripToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BaseForm addTripForm = new AddTrip(LoggedInUser);
-            addTripForm.Show();
-
-        }
-
-        private void addStoreToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BaseForm addStoreForm = new AddStoreForm(LoggedInUser);
-            addStoreForm.Show();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            Dictionary<ToolStripMenuItem, RoleEnum> rolesRequired = new Dictionary<ToolStripMenuItem, RoleEnum>
+		
+		void MainFormLoad(object sender, EventArgs e)
+		{
+			
+		}
+		
+		private void PerformPermissionsCheck()
+		{
+			
+			Dictionary<ToolStripMenuItem, RoleEnum> rolesRequired = new Dictionary<ToolStripMenuItem, RoleEnum>
                 {
                     { addStoreToolStripMenuItem, RoleEnum.Moderator },
                     { addTripToolStripMenuItem, RoleEnum.User }
@@ -74,8 +61,35 @@ namespace AuditTrailer
             {
             	blockedResource.Item.Visible = false;
             }
-            
-                	
-        }
-    }
+		}
+		
+		protected override void LoadForm()
+		{
+			InitializeComponent();
+		}
+		
+		void AddTripToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			BaseForm addTripForm = new AddTrip(LoggedInUser);
+            addTripForm.Show();
+		}
+		
+		void YourSettingsToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			var userSettingsForm = new ManageYourSettings(LoggedInUser);
+        	userSettingsForm.Show();
+		}
+		
+		void ManageStoresToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			var manageStoresForm = new ManageStores(LoggedInUser);
+            manageStoresForm.Show();
+		}
+		
+		void AddStoresToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			BaseForm addStoreForm = new AddStoreForm(LoggedInUser);
+            addStoreForm.Show();
+		}
+	}
 }

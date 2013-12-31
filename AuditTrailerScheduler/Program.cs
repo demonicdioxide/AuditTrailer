@@ -26,7 +26,7 @@ namespace AuditTrailerScheduler
 			IEnumerable<PainReliever> medicines = _collectionManager.GetAllPainReliefMedicine().Where(p => !p.IsPrescriptionOnly);
 			PainReliever nurofenPlus = medicines.First(t => t.Name.Equals("Nurofen Plus"));
 			PainReliever solpadeineSoluble = medicines.First(t => t.Name.Equals("Solpadeine Max Soluble Tablets"));
-			PainReliever solpadeineMax = medicines.First(t => t.Name.Equals("Solpdaeine Max Tablets"));
+			PainReliever solpadeineMax = medicines.First(t => t.Name.Equals("Solpadeine Max Tablets"));
 			MedicineLogEntry nurofenForMidday = new MedicineLogEntry
 			{
 				AmountTaken = MedicineConstants.NUROFEN_PLUS_DAILY_DOSAGE,

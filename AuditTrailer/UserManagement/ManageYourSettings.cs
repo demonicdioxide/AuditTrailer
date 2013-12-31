@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using AuditTrailer.Application.Authorisation;
 using AuditTrailer.Application.Managers;
 
 namespace AuditTrailer.UserManagement
@@ -57,6 +58,62 @@ namespace AuditTrailer.UserManagement
 				reminderRunOutDateLabel.Text = "N/A";        	    
     	    }
 
+        }
+        
+        void SubmitButtonClick(object sender, EventArgs e)
+        {
+        	bool hasEnteredPassword = !string.IsNullOrEmpty(passwordTextBox.Text);
+        	bool hasConfirmedPassword = !string.IsNullOrEmpty(confirmPasswordTextBox.Text);
+        	if (hasEnteredPassword && !hasConfirmedPassword) 
+        	{
+        		MessageBox.Show("You must enter in your new password twice!");
+        	}
+        	
+        	if (hasEnteredPassword && hasConfirmedPassword) 
+        	{
+        		string passwordInFirstBox = passwordTextBox.Text;
+				string passwordInConfirmBox = confirmPasswordTextBox.Text;
+				if (passwordInFirstBox.Equals(passwordInConfirmBox))
+				{
+					
+					PasswordStrengthValidationResult result = SecurityManager.DoesPasswordMeetRequirements(passwordInFirstBox);
+					
+					if (result.PasswordStrongEnough) 
+					{
+						SecurityManager.UpdateUsersPassword(LoggedInUser, passwordInFirstBox);
+						MessageBox.Show("Updated your details!");
+						passwordTextBox.Text = string.Empty;
+						confirmPasswordTextBox.Text = string.Empty;
+						passwordTextBox.Enabled = false;
+						confirmPasswordTextBox.Enabled = false;
+					}
+					else
+					{
+						passwordTextBox.Text = string.Empty;
+						confirmPasswordTextBox.Text = string.Empty;
+						
+						StringBuilder messageBuilder = new StringBuilder();
+						messageBuilder.Append("Password entered does not meet our password strength requirements for the following reasons: ");
+						messageBuilder.AppendLine();
+						foreach (var validationError in result.ValidationErrors) 
+						{
+							messageBuilder.AppendLine(validationError);
+						}
+						
+						MessageBox.Show(messageBuilder.ToString());
+						
+					}
+					
+
+				}
+				else
+				{
+					MessageBox.Show("Password in both boxes do not match!");
+					passwordTextBox.Text = string.Empty;
+					confirmPasswordTextBox.Text = string.Empty;
+			
+				}
+        	}
         }
     }
 }

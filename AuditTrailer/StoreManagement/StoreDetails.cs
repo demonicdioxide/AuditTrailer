@@ -55,12 +55,25 @@ namespace AuditTrailer.StoreManagement
 
         private void LoadStoreDetailsIntoForm()
         {
-            this.Text += string.Format(" {0} - {1}", store.Name, store.Location);
-            nameTextBox.Text = store.Name;
-            locationTextBox.Text = store.Location;
-            startTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningStartTime.Value);
-            endTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningEndTime.Value);
-            isOnlineStoreCheckBox.Checked = store.IsOnlineStore;
+        	if (store.IsOnlineStore) 
+        	{
+        		startTimeTextBox.Text = string.Empty;
+        		endTimeTextBox.Text = string.Empty;
+        		startTimeTextBox.Enabled = false;
+        		endTimeTextBox.Enabled = false;
+        		locationTextBox.Text = string.Empty;
+        		locationTextBox.Enabled = false;
+        	}
+        	else
+        	{
+	            locationTextBox.Text = store.Location;
+	            startTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningStartTime.Value);
+	            endTimeTextBox.Text = TimeSpanUtilities.ToStringWitHoursAndMinutes(store.OpeningEndTime.Value);
+        	}
+        	
+        	nameTextBox.Text = store.Name;
+        	this.Text += store.IsOnlineStore ? " " + store.Name : " " + store.Name + " - " + store.Location;
+        	isOnlineStoreCheckBox.Checked = store.IsOnlineStore;
         }
     }
 }

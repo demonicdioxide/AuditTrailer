@@ -50,7 +50,17 @@ namespace AuditTrailer.StoreManagement
             locationComboBox.Items.Clear();
             locationComboBox.Text = string.Empty;
             CalculateLocationDropdown((ComboBox)sender);
-            viewMoreDetailsButton.Enabled = false;
+            if (!((Store)storeCollectionCombox.SelectedItem).IsOnlineStore)
+            {
+            	viewMoreDetailsButton.Enabled = false;	
+            	locationComboBox.Enabled = true;
+            }
+            else
+            {
+            	viewMoreDetailsButton.Enabled = true;
+            	locationComboBox.Enabled = false;
+            }
+            
         }
 
         private void CalculateLocationDropdown(ComboBox sender)
@@ -66,7 +76,8 @@ namespace AuditTrailer.StoreManagement
 
         private void locationComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (locationComboBox.SelectedItem != null && !string.IsNullOrEmpty(locationComboBox.Text))
+        	var selectedStore = (Store)storeCollectionCombox.SelectedItem;
+        	if ((locationComboBox.SelectedItem != null && !string.IsNullOrEmpty(locationComboBox.Text)) || selectedStore.IsOnlineStore)
             {
                 viewMoreDetailsButton.Enabled = true;
             }
@@ -82,6 +93,12 @@ namespace AuditTrailer.StoreManagement
         private Store CalculateStoreFromDropdowns()
         {
             var selectedStoreInFirstDropdown = (Store)storeCollectionCombox.SelectedItem;
+            
+            if (selectedStoreInFirstDropdown.IsOnlineStore) 
+            {
+            	return selectedStoreInFirstDropdown;
+            }
+            
             // all stores that match the 'parent' name
             var allStoresThatHaveThatName = AllStores.Where(s => s.Name.Equals(selectedStoreInFirstDropdown.Name));
 
@@ -102,7 +119,7 @@ namespace AuditTrailer.StoreManagement
 
         private void locationComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(locationComboBox.Text))
+        	if (string.IsNullOrEmpty(locationComboBox.Text) && !((Store)storeCollectionCombox.SelectedItem).IsOnlineStore)
             {
                 viewMoreDetailsButton.Enabled = false;
             }
