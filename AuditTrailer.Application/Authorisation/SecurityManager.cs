@@ -126,7 +126,7 @@
 
         public bool IsUserAllowedToAccessResource(User user, RoleEnum requiredRoleEnum)
         {
-            return user.Role > requiredRoleEnum;
+            return user.Role >= requiredRoleEnum;
         }
 
         public User GetUserByID(int id)

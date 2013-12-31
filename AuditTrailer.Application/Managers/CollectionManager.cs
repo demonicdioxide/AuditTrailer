@@ -25,9 +25,9 @@ namespace AuditTrailer.Application.Managers
 
         public IEnumerable<PainReliever> GetAllPainReliefMedicine()
         {
-            var command = connection.CreateCommand(@"SELECT P.PainRelieverID, P.Name, MA.AnalgesicID As [MainPainReliever], P.MainAnalgesicAmount, SA.AnalgesicID As [SecondaryPainReliever], P.SecondaryAnalgesicAmount FROM Medicine P 
-JOIN Analgesic MA ON P.MainAnalgesicID = MA.AnalgesicID
-JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID");
+            var command = connection.CreateCommand(@"SELECT P.PainRelieverID, P.Name, MA.AnalgesicID As [MainPainReliever], P.MainAnalgesicAmount, SA.AnalgesicID As [SecondaryPainReliever], P.SecondaryAnalgesicAmount, P.IsPrescriptionOnly FROM Medicine P 
+													JOIN Analgesic MA ON P.MainAnalgesicID = MA.AnalgesicID
+													JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID");
             var reader = command.ExecuteReader();
             var listOfReliefMedicine = new List<PainReliever>();
             while (reader.Read())
@@ -44,6 +44,7 @@ JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID");
                 reliefMedicine.MainAnalgesic = mainReliever;
                 reliefMedicine.SecondaryAnalgesic = secondaryReliever;
                 reliefMedicine.BoxSizes = GetBoxSizesForMedicine(reliefMedicine);
+                reliefMedicine.IsPrescriptionOnly = bool.Parse(reader["IsPrescriptionOnly"].ToString());
                 listOfReliefMedicine.Add(reliefMedicine);
 
             }

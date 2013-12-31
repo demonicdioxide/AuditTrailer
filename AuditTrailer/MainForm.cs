@@ -19,6 +19,7 @@ namespace AuditTrailer
 
         public MainForm(User user) : base(user)
         {
+        	            this.Text += LoggedInUser.FullName;
         }
 
         private void manageStoresToolStripMenuItem_Click(object sender, EventArgs e)
@@ -33,6 +34,7 @@ namespace AuditTrailer
         protected override void LoadForm()
         {
             InitializeComponent();
+
         }
 
         private void addTripToolStripMenuItem_Click(object sender, EventArgs e)

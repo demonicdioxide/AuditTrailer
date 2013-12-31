@@ -43,7 +43,7 @@ namespace AuditTrailer.TripManagement
             _collectionManager = new CollectionManager(_databaseConnection);
             _tripManager = new TripManager(_databaseConnection);
             _stores = _collectionManager.GetAllStores();
-            _medicines = _collectionManager.GetAllPainReliefMedicine();
+            _medicines = _collectionManager.GetAllPainReliefMedicine().Where(p => !p.IsPrescriptionOnly);
             _storeTrips = new Dictionary<string, Trip>();
             lastVisitedLabel.Visible = false;
         }
@@ -82,6 +82,7 @@ namespace AuditTrailer.TripManagement
         {
             dropdownStores.DataSource = _stores.Select(s => s.Name + " - " + s.Location).ToList();
             medicineComboBox.DataSource = _medicines.Select(p => p.Name).ToList();
+            onlineToolTip.SetToolTip(dateOccureddtPicker, "If an online store, this will be the date the medicine was picked up from MailBoxEtc");
         }
 
         private Trip GetLastTripForStore(Store store)
@@ -109,6 +110,10 @@ namespace AuditTrailer.TripManagement
             _lastSelectedMedicine = _medicines.First(f => f.Name.Equals(name));
             boxSizeDropDown.DataSource = _lastSelectedMedicine.BoxSizes.Select(b => b.Name).ToList();
 
+        }
+        
+        void ToolTip1Popup(object sender, PopupEventArgs e)
+        {        	
         }
     }
 }
