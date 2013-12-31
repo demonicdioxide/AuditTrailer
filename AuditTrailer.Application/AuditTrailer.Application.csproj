@@ -73,6 +73,7 @@
     <Compile Include="Model\BoxSize.cs" />
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\MedicineBoxSize.cs" />
+    <Compile Include="Model\MedicineLogEntry.cs" />
     <Compile Include="Model\Membership.cs" />
     <Compile Include="Model\PainReliever.cs" />
     <Compile Include="Model\RoleEnum.cs" />

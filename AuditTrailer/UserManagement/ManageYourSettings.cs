@@ -34,6 +34,7 @@ namespace AuditTrailer.UserManagement
         	_runOutMappings = _reminderManager.GetMedicineReminderInformation(LoggedInUser).ToDictionary(t => t.First, t => t.Third);
         	var medicines = _collectionManager.GetAllPainReliefMedicine().Where(r => !r.IsPrescriptionOnly);
         	medicineComboBox.DataSource = medicines.Select(m => m.Name).ToList();
+        	medicineGroupBox.Text += " - " + _runOutMappings.Min(medicine => medicine.Value).AddDays(-7).ToLongDateString();
         }
         
         void RoleLabelClick(object sender, EventArgs e)

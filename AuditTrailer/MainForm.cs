@@ -19,7 +19,7 @@ namespace AuditTrailer
 
         public MainForm(User user) : base(user)
         {
-        	            this.Text += LoggedInUser.FullName;
+        	this.Text += LoggedInUser.FullName;
         }
 
         private void manageStoresToolStripMenuItem_Click(object sender, EventArgs e)

@@ -49,7 +49,9 @@
             var securityManager = new SecurityManager(DatabaseConnector.Create());
             if (!securityManager.CanUserLogin(emailTextBox.Text, passwordTextBox.Text))
             {
-                throw new SecurityException();
+            	MessageBox.Show("Incorrect login details");
+            	emailTextBox.Text = string.Empty;
+            	passwordTextBox.Text = string.Empty;
             }
 
             LoginUser(emailTextBox.Text);

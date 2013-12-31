@@ -38,7 +38,7 @@ namespace AuditTrailer.Application.Managers
 		
 		public IEnumerable<Tuple<string, int, DateTime>> GetMedicineReminderInformation(User user)
 		{
-			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) - SUM(ML.HowManyTaken) As [Amount Of Tablets] FROM Trip T
+			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) - SUM(ML.HowManyTaken) As [Amount Of Tablets], M.Name As [MedicineName] FROM Trip T
 													JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
 													JOIN BoxSize B ON B.BoxSizeID = T.BoxSizeID
 													JOIN MedicineLog ML ON ML.MedicineID = T.[BoughtMedicineID]
@@ -61,6 +61,11 @@ namespace AuditTrailer.Application.Managers
 			}
 			
 			return _information;
+		}
+		
+		public void InsertMedicineLogEntry(MedicineLogEntry entry)
+		{
+			// needs doing
 		}
 		
 		
