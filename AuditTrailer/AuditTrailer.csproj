@@ -85,6 +85,10 @@
     <Compile Include="Authorisation\ResetPasswordConfirmation.Designer.cs">
       <DependentUpon>ResetPasswordConfirmation.cs</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseManagement\BackupDatabaseForm.cs" />
+    <Compile Include="DatabaseManagement\BackupDatabaseForm.Designer.cs">
+      <DependentUpon>BackupDatabaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AuthorisedBaseForm.cs" />
     <Compile Include="Forms\AuthorisedBaseForm.Designer.cs">
       <DependentUpon>AuthorisedBaseForm.cs</DependentUpon>
@@ -190,6 +194,9 @@
       <Project>{e57d2b23-4bfa-4485-b397-fe51ab686298}</Project>
       <Name>AuditTrailer.Application</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DatabaseManagement" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

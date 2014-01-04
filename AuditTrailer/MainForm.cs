@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -99,6 +100,22 @@ namespace AuditTrailer
 			{
 				System.Windows.Forms.Application.Exit();
 			}
+		}
+		
+		void BackupToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			string filename = @"C:\Audit Trailer\Backups\AuditTrailer" + DateTime.Now.ToString("ddMMyyyyHHmm");
+			try
+			{
+				File.Copy(@"C:\AuditTrailer.db", filename);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Exception raised when backing up the database: " + ex.Message);
+				return;
+			}
+			
+			MessageBox.Show("Database backed up at: " + filename);
 		}
 	}
 }

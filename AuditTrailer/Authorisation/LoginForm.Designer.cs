@@ -45,7 +45,7 @@
         	this.loginButton.Location = new System.Drawing.Point(74, 72);
         	this.loginButton.Name = "loginButton";
         	this.loginButton.Size = new System.Drawing.Size(107, 38);
-        	this.loginButton.TabIndex = 0;
+        	this.loginButton.TabIndex = 3;
         	this.loginButton.Text = "Submit";
         	this.loginButton.UseVisualStyleBackColor = true;
         	this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
@@ -64,6 +64,7 @@
         	this.passwordTextBox.PasswordChar = '*';
         	this.passwordTextBox.Size = new System.Drawing.Size(220, 20);
         	this.passwordTextBox.TabIndex = 2;
+        	this.passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTextBoxKeyDown);
         	// 
         	// emailLabel
         	// 
@@ -88,7 +89,7 @@
         	this.resetPasswordButton.Location = new System.Drawing.Point(187, 72);
         	this.resetPasswordButton.Name = "resetPasswordButton";
         	this.resetPasswordButton.Size = new System.Drawing.Size(107, 38);
-        	this.resetPasswordButton.TabIndex = 5;
+        	this.resetPasswordButton.TabIndex = 4;
         	this.resetPasswordButton.Text = "Forgotten Password?";
         	this.resetPasswordButton.UseVisualStyleBackColor = true;
         	this.resetPasswordButton.Click += new System.EventHandler(this.ResetPasswordButtonClick);

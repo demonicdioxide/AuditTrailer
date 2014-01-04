@@ -115,13 +115,13 @@ namespace AuditTrailer
 			// manageUsersToolStripMenuItem
 			// 
 			this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-			this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.manageUsersToolStripMenuItem.Text = "Manage Users";
 			// 
 			// yourSettingsToolStripMenuItem
 			// 
 			this.yourSettingsToolStripMenuItem.Name = "yourSettingsToolStripMenuItem";
-			this.yourSettingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.yourSettingsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.yourSettingsToolStripMenuItem.Text = "Your Settings";
 			this.yourSettingsToolStripMenuItem.Click += new System.EventHandler(this.YourSettingsToolStripMenuItemClick);
 			// 
@@ -145,6 +145,7 @@ namespace AuditTrailer
 			this.backupToolStripMenuItem.Name = "backupToolStripMenuItem";
 			this.backupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.backupToolStripMenuItem.Text = "Backup";
+			this.backupToolStripMenuItem.Click += new System.EventHandler(this.BackupToolStripMenuItemClick);
 			// 
 			// MainForm
 			// 

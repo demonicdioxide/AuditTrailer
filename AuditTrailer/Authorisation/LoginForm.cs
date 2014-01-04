@@ -119,5 +119,13 @@ namespace AuditTrailer.Authorisation
         		
         	}
         }
+        
+        void PasswordTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+        	if	(e.KeyCode == Keys.Enter)
+        	{
+        		loginButton_Click(sender, EventArgs.Empty);
+        	}
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace AuditTrailer.Application.Managers
 					int actualTabletsRemaining = amountOfTablets - amountAlreadyTaken;
 					string nameOfMedicine = reader["MedicineName"].ToString();
 					int dosage = _dosageMapping[nameOfMedicine] * MedicineConstants.AMOUNT_OF_DOSAGES_TAKEN_DAILY;
-					DateTime runOutDate = DateTime.Now.AddDays(actualTabletsRemaining / (dosage));
+					DateTime runOutDate = DateTime.Now.AddDays(actualTabletsRemaining / (dosage)).AddDays(-1);
 					_information.Add(new Tuple<string, int, DateTime>(nameOfMedicine, actualTabletsRemaining, runOutDate));
 				}
 			}
