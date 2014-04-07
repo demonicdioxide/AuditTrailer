@@ -19,7 +19,7 @@ namespace AuditTrailer.Application.Logging
 	{		
 		public static void Write(string message, LogLevel level)
 		{
-			using (var streamWriter = new StreamWriter(@"log.txt"))
+			using (var streamWriter = new StreamWriter(@"log.txt", append: true))
 			{
 				streamWriter.WriteLine();
 				streamWriter.WriteLine("Level: " + level.ToString());

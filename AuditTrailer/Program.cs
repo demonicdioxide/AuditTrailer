@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-
-using NLog;
-using NLog.Config;
-using NLog.Targets;
-
 namespace AuditTrailer
 {
     using AuditTrailer.Application.Model;
@@ -25,10 +20,7 @@ namespace AuditTrailer
         static void Main()
         {
 			System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-        	AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs e) 
-        	{
-        		Log.WriteException(((Exception)e.ExceptionObject), "Unhandled exception");
-        	};
+			AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) => Log.WriteException(((Exception)e.ExceptionObject), "Unhandled exception");
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new LoginForm());

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using AuditTrailer.Application.Database;
-using AuditTrailer.Application.DotNetFourEmulation;
 using AuditTrailer.Application.Model;
 
 namespace AuditTrailer.Application.Managers

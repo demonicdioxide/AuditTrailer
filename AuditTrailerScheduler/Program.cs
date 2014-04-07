@@ -55,10 +55,6 @@ namespace AuditTrailerScheduler
 			ReminderManager _reminderManager = new ReminderManager();
 			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
 			Log.Write("Before entering log entry...", LogLevel.Debug);
-			_reminderManager.GetMedicineReminderInformation(_securityManager.GetUserByEmail("arran.huxtable@gmail.com")).ToList().ForEach(a =>
-			                                                                                                                              {
-			                                                                                                                              	Log.Write(a.First + " has " + a.Second + " tablets " + " and runs out: " + a.Third.ToLongDateString(), LogLevel.Debug);
-			                                                                                                                              });
 			IEnumerable<PainReliever> medicines = _collectionManager.GetAllPainReliefMedicine().Where(p => !p.IsPrescriptionOnly);
 			PainReliever nurofenPlus = medicines.First(t => t.Name.Equals("Nurofen Plus"));
 			PainReliever solpadeineSoluble = medicines.First(t => t.Name.Equals("Solpadeine Max Soluble Tablets"));
@@ -94,10 +90,6 @@ namespace AuditTrailerScheduler
 				_reminderManager.InsertMedicineLogEntry(logEntry);
 			}
 			Log.Write("After entering log entry...", LogLevel.Debug);
-			_reminderManager.GetMedicineReminderInformation(_securityManager.GetUserByEmail("arran.huxtable@gmail.com")).ToList().ForEach(a =>
-			                                                                                                                              {
-			                                                                                                                              	Log.Write(a.First + " has " + a.Second + " tablets " + " and runs out: " + a.Third.ToLongDateString(), LogLevel.Debug);
-			                                                                                                                              });
 		}
 		
 		private static void SendReminderEmail(string userEmail)
@@ -106,7 +98,7 @@ namespace AuditTrailerScheduler
 			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
 			User user = _securityManager.GetUserByEmail(userEmail);
 			var reminderInformation = _reminderManager.GetMedicineReminderInformation(user);
-			DateTime closetDate = reminderInformation.Min(d => d.Third);
+			DateTime closetDate = reminderInformation.Min(d => d.Item3);
 			var difference = DateTime.Now.Subtract(closetDate.AddDays(-7));
 			if (difference.Days.Between(-2, 2, true))
 			{

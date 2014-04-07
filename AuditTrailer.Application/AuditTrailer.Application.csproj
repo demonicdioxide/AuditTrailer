@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AuditTrailer.Application</RootNamespace>
     <AssemblyName>AuditTrailer.Application</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -41,20 +41,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
-      <HintPath>..\..\..\..\Quartz.NET-2.2.1\bin\3.5\release\Quartz\Common.Logging.dll</HintPath>
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Nustache.Core">
       <HintPath>..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
-      <HintPath>..\..\..\..\Quartz.NET-2.2.1\bin\3.5\release\Quartz\Quartz.dll</HintPath>
+      <HintPath>..\packages\Quartz.2.2.3\lib\net40\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite" />
-    <Reference Include="System.Data.SQLite.Linq" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\..\Program Files %28x86%29\System.Data.SQLite\2010\bin\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\..\..\Program Files %28x86%29\System.Data.SQLite\2010\bin\System.Data.SQLite.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,7 +75,6 @@
     <Compile Include="Authorisation\SecurityManager.cs" />
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnector.cs" />
-    <Compile Include="DotNetFourEmulation\Tuple.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\Templating\Templator.cs" />
     <Compile Include="Extensions.cs" />
@@ -93,7 +100,6 @@
     <Compile Include="TimeSpanUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DotNetFourEmulation" />
     <Folder Include="Email" />
     <Folder Include="Email\Templating" />
     <Folder Include="Logging" />
@@ -105,6 +111,9 @@
     <Content Include="Email\Templating\forgottenpasswordtemplate.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="job_scheduling_data_2_0.xsd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
