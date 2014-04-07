@@ -21,5 +21,10 @@ namespace AuditTrailer.Application
 		        ? lower <= num && num <= upper
 		        : lower < num && num < upper;
 		}
+		
+		public static bool IsMoreThan(this int number, int comparsion)
+		{
+			return number > comparsion;
+		}
 	}
 }

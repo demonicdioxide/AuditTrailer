@@ -35,7 +35,7 @@ namespace AuditTrailer.Application.Managers
 			};
 		}
 		
-		public IEnumerable<Tuple<string, int, DateTime>> GetMedicineReminderInformation(User user)
+		public IEnumerable<Tuple<string, int, DateTime, int>> GetMedicineReminderInformation(User user)
 		{
 			var command = _connection.CreateCommand(@"SELECT SUM(T.[AmountOfBoxesBought] * B.Name) As [Amount Of Tablets], M.Name As [MedicineName], T.BoughtMedicineID As [MedicineID] FROM Trip T
 													JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
@@ -43,7 +43,7 @@ namespace AuditTrailer.Application.Managers
 													WHERE T.UserID = @UserID
 													GROUP BY M.PainRelieverID");
 			command.Parameters.AddWithValue("@UserID", user.ID);
-			var _information = new List<Tuple<string, int, DateTime>>();
+			var _information = new List<Tuple<string, int, DateTime, int>>();
 			using (var reader = command.ExecuteReader())
 			{
 				while (reader.Read())
@@ -55,7 +55,33 @@ namespace AuditTrailer.Application.Managers
 					string nameOfMedicine = reader["MedicineName"].ToString();
 					int dosage = _dosageMapping[nameOfMedicine] * MedicineConstants.AMOUNT_OF_DOSAGES_TAKEN_DAILY;
 					DateTime runOutDate = DateTime.Now.AddDays(actualTabletsRemaining / (dosage)).AddDays(-1);
-					_information.Add(new Tuple<string, int, DateTime>(nameOfMedicine, actualTabletsRemaining, runOutDate));
+					_information.Add(new Tuple<string, int, DateTime, int>(nameOfMedicine, actualTabletsRemaining, runOutDate, user.ID));
+				}
+			}
+			
+			return _information;
+		}
+		
+		public IEnumerable<Tuple<string, int, DateTime, int>> GetMedicineReminderInformation()
+		{
+			var command = _connection.CreateCommand(@"SELECT T.UserID, SUM(T.[AmountOfBoxesBought] * B.Name) As [Amount Of Tablets], M.Name As [MedicineName], T.BoughtMedicineID As [MedicineID] FROM Trip T
+					JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
+					JOIN BoxSize B ON B.BoxSizeID = T.BoxSizeID
+					GROUP BY T.UserID, M.PainRelieverID");
+			var _information = new List<Tuple<string, int, DateTime, int>>();
+			using (var reader = command.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					int amountOfTablets = int.Parse(reader["Amount Of Tablets"].ToString());
+					int medicineID = int.Parse(reader["MedicineID"].ToString());
+					int amountAlreadyTaken = GetAmountAlreadyTaken(medicineID);
+					int actualTabletsRemaining = amountOfTablets - amountAlreadyTaken;
+					string nameOfMedicine = reader["MedicineName"].ToString();
+					int dosage = _dosageMapping[nameOfMedicine] * MedicineConstants.AMOUNT_OF_DOSAGES_TAKEN_DAILY;
+					DateTime runOutDate = DateTime.Now.AddDays(actualTabletsRemaining / (dosage)).AddDays(-1);
+					int userID = int.Parse(reader["UserID"].ToString());
+					_information.Add(new Tuple<string, int, DateTime, int>(nameOfMedicine, actualTabletsRemaining, runOutDate, userID));
 				}
 			}
 			

@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -30,7 +31,7 @@ namespace AuditTrailer.Application.Email.Templating
 			{
 				{ "RunOutDate", ReminderDate.ToLongDateString() }
 			};
-			string path = Path.Combine(Path.Combine(Environment.CurrentDirectory, "Email"), Path.Combine("Templating", "remindertemplate.htm"));
+			string path = Path.Combine(ConfigurationManager.AppSettings["templates.folder"], "remindertemplate.htm");
 			return Render.FileToString(path, data, RenderContextBehaviour.GetDefaultRenderContextBehaviour());
 		}
 		
@@ -40,7 +41,7 @@ namespace AuditTrailer.Application.Email.Templating
 			{
 				{ "ForgottenPasswordCode", ForgottenPasswordCode }
 			};
-			string path = Path.Combine(Path.Combine(Environment.CurrentDirectory, "Email"), Path.Combine("Templating", "forgottenpasswordtemplate.htm"));
+			string path = Path.Combine(ConfigurationManager.AppSettings["templates.folder"], "forgottenpasswordtemplate.htm");
 			return Render.FileToString(path, data, RenderContextBehaviour.GetDefaultRenderContextBehaviour());
 		}
 	}

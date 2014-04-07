@@ -26,15 +26,16 @@ namespace AuditTrailerScheduler
 	{
 		public static void Main(string[] args)
 		{
-			Log.Write(args.First(), LogLevel.Debug);
-			Log.Write(args[1], LogLevel.Debug);
+
 			string firstArgument = args.FirstOrDefault();
 			firstArgument = string.IsNullOrEmpty(firstArgument) ? string.Empty : firstArgument;
-			if (firstArgument.Equals("reminderemail", StringComparison.OrdinalIgnoreCase))
+			if (!string.IsNullOrEmpty(firstArgument))
 			{
-				SendReminderEmail(args.ElementAt(1));
+				Log.Write(args.First(), LogLevel.Debug);
+				Log.Write(args[1], LogLevel.Debug);
 			}
-			else if (firstArgument.Equals("backup"))
+			
+			if (firstArgument.Equals("backup"))
 			{
 				BackupDatabase();
 			}
@@ -42,6 +43,7 @@ namespace AuditTrailerScheduler
 			{
 				EnterLogEntryInformation();
 			}
+			SendReminderEmail("arran.huxtable@gmail.com");
 			Environment.Exit(0); // successful exit.
 		}
 		
@@ -61,28 +63,29 @@ namespace AuditTrailerScheduler
 			PainReliever nurofenPlus = medicines.First(t => t.Name.Equals("Nurofen Plus"));
 			PainReliever solpadeineSoluble = medicines.First(t => t.Name.Equals("Solpadeine Max Soluble Tablets"));
 			PainReliever solpadeineMax = medicines.First(t => t.Name.Equals("Solpadeine Max Tablets"));
+			DateTime yesterday = DateTime.Today.AddDays(-1);
 			MedicineLogEntry nurofenForMidday = new MedicineLogEntry
 			{
 				AmountTaken = MedicineConstants.NUROFEN_PLUS_DAILY_DOSAGE,
-				DateTaken = DateTime.Today.Add(TimeSpan.FromHours(13)),
+				DateTaken = yesterday.Add(TimeSpan.FromHours(13)),
 				Medicine = nurofenPlus
 			};
 			MedicineLogEntry nurofenForEvening = new MedicineLogEntry
 			{
 				AmountTaken = MedicineConstants.NUROFEN_PLUS_DAILY_DOSAGE,
-				DateTaken = DateTime.Today.Add(TimeSpan.FromHours(23)),
+				DateTaken = yesterday.Add(TimeSpan.FromHours(23)),
 				Medicine = nurofenPlus
 			};
 			MedicineLogEntry solpaMaxSolubleForMidday = new MedicineLogEntry
 			{
 				AmountTaken = MedicineConstants.SOLPADEINE_MAX_SOLUBLE_DAILY_DOSAGE,
-				DateTaken = DateTime.Today.Add(TimeSpan.FromHours(13)),
+				DateTaken = yesterday.Add(TimeSpan.FromHours(13)),
 				Medicine = solpadeineSoluble
 			};
 			MedicineLogEntry solpaMaxForEvening = new MedicineLogEntry
 			{
 				AmountTaken = MedicineConstants.SOLPDAEINE_MAX_DAILY_DOSAGE,
-				DateTaken = DateTime.Today.Add(TimeSpan.FromHours(23)),
+				DateTaken = yesterday.Add(TimeSpan.FromHours(23)),
 				Medicine = solpadeineMax
 			};
 			var logEntries = new[] { nurofenForMidday, solpaMaxSolubleForMidday,
@@ -105,7 +108,7 @@ namespace AuditTrailerScheduler
 			Log.Write("Closet date is: " + closetDate.ToShortDateString(), LogLevel.Debug);
 			var difference = DateTime.Now.Subtract(closetDate.AddDays(-7));
 			Log.Write("Difference: " + difference.TotalDays, LogLevel.Debug);
-			if (difference.Days.Between(-2, 2, true))
+			if (difference.Days.Between(-2, 2, true) || closetDate < DateTime.Now)
 			{
 				EmailSender sender = new EmailSender
 				{
@@ -118,6 +121,14 @@ namespace AuditTrailerScheduler
 				string message = templator.RenderReminderEmailToString();
 				sender.SendEmail(message);
 			}
+		}
+		
+		private static void SendReminderEmail()
+		{
+			ReminderManager _reminderManager = new ReminderManager();
+			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
+			var reminderInformation = _reminderManager.GetMedicineReminderInformation();
+			var information = reminderInformation.Select(d => new { RunOutDate = d.Item3, UserID = d.Item4 });  
 		}
 	}
 }

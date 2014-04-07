@@ -103,7 +103,17 @@ namespace AuditTrailer.Authorisation
         	var dialogResult = MessageBox.Show("Would you like a password reset code to be emailed to you?", "Password reset", MessageBoxButtons.YesNo);
         	if (dialogResult == DialogResult.Yes) 
         	{
-        		User user = securityManager.GetUserByEmail(emailTextBox.Text.Trim());
+        		User user = null;
+				user = securityManager.GetUserByEmail(emailTextBox.Text.Trim());
+				if (user == null) 
+				{
+					user = securityManager.GetUserByUsername(emailTextBox.Text.Trim());
+					if (user == null)
+					{
+						MessageBox.Show("User by the email or username of: " + emailTextBox.Text.Trim() + " does not exist!");
+						return;
+					}
+				}
         		securityManager.DeleteAllForgottenPasswordRequestsForUser(user);
         		string code = securityManager.InsertForgottenPasswordRequestForUser(user);
         		var templator = new Templator { ForgottenPasswordCode = code };
