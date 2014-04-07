@@ -80,7 +80,12 @@ namespace AuditTrailer.Authorisation
         
         private void LoginUser(string text)
         {
-            var user = securityManager.GetUserByEmail(text);
+			User user = null;
+            user = securityManager.GetUserByEmail(text);
+			if (user == null) 
+			{
+				user = securityManager.GetUserByUsername(text);				
+			}
             Hide();
             var mainForm = new MainForm(user);
             mainForm.Show();

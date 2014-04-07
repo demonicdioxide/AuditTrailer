@@ -138,6 +138,8 @@ namespace AuditTrailer.TripManagement
                 _lastSelectedMedicine.Name, int.Parse(boxSizeDropDown.SelectedItem.ToString()), (int)amountBoughtNumericTextBox.Value);
             trip.PainRelieverBought = _lastSelectedMedicine;
             trip.Notes = notesTextBox.Text;
+			trip.CreatedByID = LoggedInUser.ID;
+			trip.Visible = true;
 			_tripManager.AddTrip(trip);
             MessageBox.Show("Successfully added trip!");
             ClearStates();
@@ -162,6 +164,7 @@ namespace AuditTrailer.TripManagement
         	boxSizeDropDown.SelectedText = string.Empty;
         	boxSizeDropDown.Text = string.Empty;
         	medicineComboBox.SelectedText = string.Empty;
+			medicineComboBox.Text = string.Empty;
         }
         
         void ToolTip1Popup(object sender, PopupEventArgs e)

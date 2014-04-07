@@ -89,7 +89,7 @@
         public bool CanUserLogin(string email, string password)
         {
 
-            var command = connection.CreateCommand("SELECT UserID FROM User WHERE Email = @Email");
+            var command = connection.CreateCommand("SELECT UserID FROM User WHERE Email = @Email OR Username = @Email");
             command.Parameters.AddWithValue("@Email", email);
             int userID;
 
@@ -146,6 +146,7 @@
                         user.Surname = reader["Surname"].ToString();
                         user.Email = reader["Email"].ToString();
                         user.Role = GetRoleByUser(user);
+						user.Username = reader["Username"].ToString();
                         return user;
                     }
 
@@ -153,6 +154,31 @@
                 }
             }
         }
+		
+		public User GetUserByUsername(string username)
+		{
+			var user = new User();
+            using (var connection = DatabaseConnector.Create())
+            {
+                var command = connection.CreateCommand("SELECT * FROM User WHERE Username = @Username");
+                command.Parameters.AddWithValue("@Username", username);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        user.ID = int.Parse(reader["UserID"].ToString());
+                        user.FirstName = reader["FirstName"].ToString();
+                        user.Surname = reader["Surname"].ToString();
+                        user.Email = reader["Email"].ToString();
+                        user.Role = GetRoleByUser(user);
+						user.Username = reader["Username"].ToString();
+                        return user;
+                    }
+
+                    return null; // no user found.
+                }
+            }
+		}
 
         public RoleEnum GetRoleByUser(User user)
         {

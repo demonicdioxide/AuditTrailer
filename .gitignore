@@ -109,3 +109,4 @@ UpgradeLog*.XML
 /AuditTrailer.sln.sdsettings
 /AuditTrailer/app.config
 /AuditTrailerScheduler/app.config
+/AuditTrailer/app.config

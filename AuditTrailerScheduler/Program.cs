@@ -26,6 +26,8 @@ namespace AuditTrailerScheduler
 	{
 		public static void Main(string[] args)
 		{
+			Log.Write(args.First(), LogLevel.Debug);
+			Log.Write(args[1], LogLevel.Debug);
 			string firstArgument = args.FirstOrDefault();
 			firstArgument = string.IsNullOrEmpty(firstArgument) ? string.Empty : firstArgument;
 			if (firstArgument.Equals("reminderemail", StringComparison.OrdinalIgnoreCase))
@@ -97,9 +99,12 @@ namespace AuditTrailerScheduler
 			ReminderManager _reminderManager = new ReminderManager();
 			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
 			User user = _securityManager.GetUserByEmail(userEmail);
+			Log.Write("User found", LogLevel.Debug);
 			var reminderInformation = _reminderManager.GetMedicineReminderInformation(user);
 			DateTime closetDate = reminderInformation.Min(d => d.Item3);
+			Log.Write("Closet date is: " + closetDate.ToShortDateString(), LogLevel.Debug);
 			var difference = DateTime.Now.Subtract(closetDate.AddDays(-7));
+			Log.Write("Difference: " + difference.TotalDays, LogLevel.Debug);
 			if (difference.Days.Between(-2, 2, true))
 			{
 				EmailSender sender = new EmailSender

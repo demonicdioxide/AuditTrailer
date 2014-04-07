@@ -24,6 +24,8 @@
                 return FirstName + " " + Surname;
             }
         }
+		
+		public string Username { get; set; }
 
         public RoleEnum Role { get; set; }
     }

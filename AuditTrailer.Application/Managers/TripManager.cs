@@ -47,7 +47,8 @@ namespace AuditTrailer.Application.Managers
 
             command = connection.CreateCommand(
                 @"INSERT INTO Trip 
-                    SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, @UserID, @Notes");
+                    SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, 
+				@UserID, @Notes, @CreatedByID, @Visible");
             command.Parameters.AddWithValue("@LastID", lastID + 1);
             command.Parameters.AddWithValue("@DateOccurred", trip.DateOccurred);
             command.Parameters.AddWithValue("@BoxSizeBought", medicineBoxSize.BoxSizeID);
@@ -56,6 +57,8 @@ namespace AuditTrailer.Application.Managers
             command.Parameters.AddWithValue("@StoreID", trip.Store.ID);
             command.Parameters.AddWithValue("@UserID", trip.User.ID);
             command.Parameters.AddWithValue("@Notes", trip.Notes);
+			command.Parameters.AddWithValue("@CreatedByID", trip.CreatedByID);
+			command.Parameters.AddWithValue("@Visible", trip.Visible);
             int numberAdded = command.ExecuteNonQuery();
             if (numberAdded != 1)
             {
@@ -71,7 +74,7 @@ namespace AuditTrailer.Application.Managers
                                     JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
                                     JOIN User U ON U.UserID = T.UserID
                                     JOIN BoxSize BZ ON BZ.BoxSizeID = T.BoxSizeID 
-                                    WHERE T.StoreID = @StoreID";
+                                    WHERE T.StoreID = @StoreID AND T.Visible = 1";
             var command = connection.CreateCommand(commandText);
             command.Parameters.AddWithValue("@StoreID", store.ID);
             using (var reader = command.ExecuteReader())
@@ -87,6 +90,7 @@ namespace AuditTrailer.Application.Managers
                         int.Parse(reader["BoxSize"].ToString()), int.Parse(reader["AmountOfBoxesBought"].ToString()));
                     trip.DateOccurred = DateTime.Parse(reader["DateOccurred"].ToString());
                     trip.Notes = string.IsNullOrEmpty(reader["Notes"].ToString()) ? string.Empty : reader["Notes"].ToString();
+					trip.Visible = true;
                     trips.Add(trip);
                 }
             }

@@ -10,6 +10,7 @@ namespace AuditTrailer.Application.Model
         public Store Store { get; set; }
         public User User { get; set; }
         public Tuple<string, int, int> MedicineDetails { get; set; }
+		public int CreatedByID { get; set;}
 
         public PainReliever PainRelieverBought { get; set; }
         public string Notes { get; set; }
@@ -36,5 +37,6 @@ namespace AuditTrailer.Application.Model
                 return MedicineDetails.Item3;
             }
         }
+		public bool Visible { get; set; }
     }
 }
