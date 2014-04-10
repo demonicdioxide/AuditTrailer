@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 
 using Nustache.Core;
+using AuditTrailer.Application.Model;
 
 namespace AuditTrailer.Application.Email.Templating
 {
@@ -21,7 +22,7 @@ namespace AuditTrailer.Application.Email.Templating
 	/// </summary>
 	public class Templator
 	{
-		public DateTime ReminderDate { get; set; }
+		public ReminderResponse ReminderResponse { get; set; }
 		
 		public string ForgottenPasswordCode { get; set; }
 		
@@ -29,7 +30,8 @@ namespace AuditTrailer.Application.Email.Templating
 		{
 			Dictionary<string, string> data = new Dictionary<string, string>
 			{
-				{ "RunOutDate", ReminderDate.ToLongDateString() }
+				{ "RunOutDate", ReminderResponse.ExpiryDate.ToLongDateString() },
+				{ "Name", ReminderResponse.Medicine.Name }
 			};
 			string path = Path.Combine(ConfigurationManager.AppSettings["templates.folder"], "remindertemplate.htm");
 			return Render.FileToString(path, data, RenderContextBehaviour.GetDefaultRenderContextBehaviour());

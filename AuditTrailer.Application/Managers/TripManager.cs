@@ -44,11 +44,33 @@ namespace AuditTrailer.Application.Managers
             {
                 throw new SecurityException("Box Size is not applicable for this medication");
             }
+			
+			int howManyTakenADay = MedicineConstants.GetDailyDosageForMedicine(trip.PainRelieverBought.Name);
+			int amountOfTablets = trip.BoxSizeBought * trip.AmountBought;
+			int howManyDaysItLasts = amountOfTablets / howManyTakenADay;
+			
+			DateTime? lastExpiryDateForMedicine = GetLastExpiryDateForMedicine(trip.PainRelieverBought.ID);
+			DateTime parsedLastExpiryDate;
+			if (!lastExpiryDateForMedicine.HasValue) 
+			{
+				// if we couldnt find it in the database
+				// lets assume its today plus the HowManyDatsItLasts 
+				parsedLastExpiryDate = DateTime.Today;
+					
+			}
+			else
+			{
+				parsedLastExpiryDate = lastExpiryDateForMedicine.Value;
+			}
+		
+
+			DateTime calculatedExpiryDate = parsedLastExpiryDate.AddDays(howManyDaysItLasts);
+			trip.ExpiryDate = calculatedExpiryDate;
 
             command = connection.CreateCommand(
                 @"INSERT INTO Trip 
                     SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, 
-				@UserID, @Notes, @CreatedByID, @Visible");
+				@UserID, @Notes, @CreatedByID, @Visible, @ExpiryDate");
             command.Parameters.AddWithValue("@LastID", lastID + 1);
             command.Parameters.AddWithValue("@DateOccurred", trip.DateOccurred);
             command.Parameters.AddWithValue("@BoxSizeBought", medicineBoxSize.BoxSizeID);
@@ -59,6 +81,7 @@ namespace AuditTrailer.Application.Managers
             command.Parameters.AddWithValue("@Notes", trip.Notes);
 			command.Parameters.AddWithValue("@CreatedByID", trip.CreatedByID);
 			command.Parameters.AddWithValue("@Visible", trip.Visible);
+			command.Parameters.AddWithValue("@ExpiryDate", trip.ExpiryDate);
             int numberAdded = command.ExecuteNonQuery();
             if (numberAdded != 1)
             {
@@ -66,6 +89,24 @@ namespace AuditTrailer.Application.Managers
             }
 
         }
+		
+		public DateTime? GetLastExpiryDateForMedicine(int medicineID)
+		{
+			string commandText = @"SELECT T.ExpiryDate FROM Trip T WHERE T.BoughtMedicineID = @ID ORDER BY T.ExpiryDate DESC LIMIT 1";
+			var command = connection.CreateCommand(commandText);
+            command.Parameters.AddWithValue("@ID", medicineID);
+			 using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+					string expiryDateUnparsed = reader["ExpiryDate"].ToString();
+					DateTime expiryDate = DateTime.Parse(expiryDateUnparsed);
+					return expiryDate;
+                }
+            }
+			
+			return null; // if it's not there, let the caller decide what to do with it
+		}
 
         public IEnumerable<Trip> GetTripsForStore(Store store)
         {

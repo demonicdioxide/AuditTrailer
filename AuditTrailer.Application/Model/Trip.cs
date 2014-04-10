@@ -38,5 +38,7 @@ namespace AuditTrailer.Application.Model
             }
         }
 		public bool Visible { get; set; }
-    }
+		
+		public DateTime ExpiryDate { get; set; }
+	}
 }

@@ -32,7 +32,7 @@ namespace AuditTrailerScheduler
 			if (!string.IsNullOrEmpty(firstArgument))
 			{
 				Log.Write(args.First(), LogLevel.Debug);
-				Log.Write(args[1], LogLevel.Debug);
+				//Log.Write(args[1], LogLevel.Debug);
 			}
 			
 			if (firstArgument.Equals("backup"))
@@ -41,6 +41,7 @@ namespace AuditTrailerScheduler
 			}
 			else
 			{
+				Log.Write("Entering obsolete medicine log entry, please fix!", LogLevel.Warning);
 				EnterLogEntryInformation();
 			}
 			SendReminderEmail("arran.huxtable@gmail.com");
@@ -49,10 +50,13 @@ namespace AuditTrailerScheduler
 		
 		private static void BackupDatabase()
 		{
-			string uniqueFileName = DateTime.Now.ToString("ddMMyyyy.HH.mm.db");
-			File.Copy(@"C:\AuditTrailer.db", @"C:\Audit Trailer\Backups\" + uniqueFileName);
+			string uniqueFileName = DateTime.Now.ToString("ddMMyyyy.HH.mm") + ".db";
+			string originalPath = Path.Combine(@"C:\", "AuditTrailer.Debug.db");
+			string newPath = Path.Combine(@"C:\", "AuditTrailer", "Backups", uniqueFileName);
+			File.Copy(originalPath, newPath);
 		}
 		
+		[Obsolete]
 		private static void EnterLogEntryInformation()
 		{
 			CollectionManager _collectionManager = new CollectionManager(DatabaseConnector.Create());
@@ -104,11 +108,7 @@ namespace AuditTrailerScheduler
 			User user = _securityManager.GetUserByEmail(userEmail);
 			Log.Write("User found", LogLevel.Debug);
 			var reminderInformation = _reminderManager.GetMedicineReminderInformation(user);
-			DateTime closetDate = reminderInformation.Min(d => d.Item3);
-			Log.Write("Closet date is: " + closetDate.ToShortDateString(), LogLevel.Debug);
-			var difference = DateTime.Now.Subtract(closetDate.AddDays(-7));
-			Log.Write("Difference: " + difference.TotalDays, LogLevel.Debug);
-			if (difference.Days.Between(-2, 2, true) || closetDate < DateTime.Now)
+			if (reminderInformation != null && reminderInformation.ShouldRemnderUser)
 			{
 				EmailSender sender = new EmailSender
 				{
@@ -116,19 +116,12 @@ namespace AuditTrailerScheduler
 				};
 				Templator templator = new Templator
 				{
-					ReminderDate = closetDate.AddDays(-7)
+					ReminderResponse = reminderInformation
 				};
 				string message = templator.RenderReminderEmailToString();
 				sender.SendEmail(message);
 			}
 		}
-		
-		private static void SendReminderEmail()
-		{
-			ReminderManager _reminderManager = new ReminderManager();
-			SecurityManager _securityManager = new SecurityManager(DatabaseConnector.Create());
-			var reminderInformation = _reminderManager.GetMedicineReminderInformation();
-			var information = reminderInformation.Select(d => new { RunOutDate = d.Item3, UserID = d.Item4 });  
-		}
+	
 	}
 }

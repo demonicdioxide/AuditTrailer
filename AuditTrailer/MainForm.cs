@@ -107,7 +107,7 @@ namespace AuditTrailer
 			string filename = @"C:\Audit Trailer\Backups\AuditTrailer" + DateTime.Now.ToString("ddMMyyyyHHmm");
 			try
 			{
-				File.Copy(@"C:\AuditTrailer.db", filename);
+				File.Copy(@"C:\AuditTrailer.Debug.db", filename);
 			}
 			catch (Exception ex)
 			{

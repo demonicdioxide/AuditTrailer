@@ -19,7 +19,7 @@ namespace AuditTrailer.UserManagement
     {
     	private ReminderManager _reminderManager;
     	private CollectionManager _collectionManager;
-    	private Dictionary<string, DateTime> _runOutMappings;
+    	private IEnumerable<ReminderResponse> _runOutMappings;
     	
         public ManageYourSettings(User user) : base(user)
         {
@@ -32,10 +32,10 @@ namespace AuditTrailer.UserManagement
         {
         	reminderRunOutDateLabel.Visible = false;
         	roleLabel.Text = SecurityManager.GetRoleDisplayName(LoggedInUser.Role);
-        	_runOutMappings = _reminderManager.GetMedicineReminderInformation(LoggedInUser).ToDictionary(t => t.Item1, t => t.Item3);
+        	_runOutMappings = _reminderManager.GetMedicineReminderForUser(LoggedInUser);
         	var medicines = _collectionManager.GetAllPainReliefMedicine().Where(r => !r.IsPrescriptionOnly);
         	medicineComboBox.DataSource = medicines.Select(m => m.Name).ToList();
-        	medicineGroupBox.Text += " - " + _runOutMappings.Min(medicine => medicine.Value).AddDays(-7).ToLongDateString();
+			medicineGroupBox.Text += " - " + _runOutMappings.Min(m => m.ExpiryDate).AddDays(-LoggedInUser.ReminderRangeInDays).ToLongDateString();
         }
         
         void RoleLabelClick(object sender, EventArgs e)
@@ -45,12 +45,12 @@ namespace AuditTrailer.UserManagement
         
         void MedicineComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-        	DateTime runOutTime;
         	string comboBoxValue = ((ComboBox)sender).SelectedItem.ToString();
-        	if (_runOutMappings.TryGetValue(comboBoxValue, out runOutTime))
+			ReminderResponse reminderResponseForMedicine = _runOutMappings.SingleOrDefault(s => s.Medicine.Name.Equals(comboBoxValue));
+        	if (reminderResponseForMedicine != null)
         	{
 	        	reminderRunOutDateLabel.Visible = true;
-	        	reminderRunOutDateLabel.Text = runOutTime.ToLongDateString();
+	        	reminderRunOutDateLabel.Text = reminderResponseForMedicine.ExpiryDate.ToLongDateString();
         	}
     	    else 
     	    {

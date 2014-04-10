@@ -15,8 +15,8 @@ namespace AuditTrailer.Application.Model
 	/// </summary>
 	public class ReminderResponse
 	{
-		public ReminderResponse()
-		{
-		}
+		public bool ShouldRemnderUser { get; set; }
+		public DateTime ExpiryDate { get; set; }
+		public PainReliever Medicine { get; set ;}
 	}
 }

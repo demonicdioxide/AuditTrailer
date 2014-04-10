@@ -92,6 +92,7 @@
     <Compile Include="Model\MedicineLogEntry.cs" />
     <Compile Include="Model\Membership.cs" />
     <Compile Include="Model\PainReliever.cs" />
+    <Compile Include="Model\ReminderResponse.cs" />
     <Compile Include="Model\RoleEnum.cs" />
     <Compile Include="Model\Store.cs" />
     <Compile Include="Model\Trip.cs" />

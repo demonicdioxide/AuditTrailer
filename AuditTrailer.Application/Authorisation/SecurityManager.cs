@@ -147,6 +147,7 @@
                         user.Email = reader["Email"].ToString();
                         user.Role = GetRoleByUser(user);
 						user.Username = reader["Username"].ToString();
+						user.ReminderRangeInDays = int.Parse(reader["ReminderRange"].ToString());
                         return user;
                     }
 
@@ -172,6 +173,7 @@
                         user.Email = reader["Email"].ToString();
                         user.Role = GetRoleByUser(user);
 						user.Username = reader["Username"].ToString();
+						user.ReminderRangeInDays = int.Parse(reader["ReminderRange"].ToString());
                         return user;
                     }
 
@@ -233,6 +235,8 @@
                         user.Surname = reader["Surname"].ToString();
                         user.Email = reader["Email"].ToString();
                         user.Role = GetRoleByUser(user);
+						user.Username = reader["Username"].ToString();
+						user.ReminderRangeInDays = int.Parse(reader["ReminderRange"].ToString());
                         return user;
                     }
 
