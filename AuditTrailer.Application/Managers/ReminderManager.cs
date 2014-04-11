@@ -69,7 +69,7 @@ namespace AuditTrailer.Application.Managers
 		
 		public ReminderResponse GetMedicineReminderInformation(User user)
 		{
-			return GetMedicineReminderForUser(user).OrderByDescending(r => r.ExpiryDate).FirstOrDefault(r => r.ShouldRemnderUser);
+			return GetMedicineReminderForUser(user).OrderBy(r => r.ExpiryDate).FirstOrDefault(r => r.ShouldRemnderUser);
 		}
 		
 		private bool ShouldRemindUser(DateTime lastExpiryDate, int reminderRangeInDays)
