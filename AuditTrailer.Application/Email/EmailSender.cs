@@ -10,6 +10,8 @@ using System;
 using System.Configuration;
 using System.Net;
 using System.Net.Mail;
+using AuditTrailer.Application.Logging;
+using AuditTrailer.Application.Net;
 
 namespace AuditTrailer.Application.Email
 {
@@ -19,8 +21,21 @@ namespace AuditTrailer.Application.Email
 	public class EmailSender
 	{
 		public string Recipient { get; set; }
+		private InternetManager NetManager { get; set; }
+		
+		public EmailSender()
+		{
+			NetManager = new InternetManager();
+		}
+		
+		
 		public void SendEmail(string email)
 		{
+			if (!NetManager.HasBasicInternetConnection()) {
+				Log.Write("Not sending email due to no internet connection", LogLevel.Warning);
+				return;
+			}
+			
 			var client = new SmtpClient();
 			
 			client.Host = "smtp.gmail.com";

@@ -132,7 +132,7 @@ namespace AuditTrailer.TripManagement
         	
             var trip = new Trip();
             trip.User = LoggedInUser;
-            trip.DateOccurred = dateOccureddtPicker.Value;
+            trip.DateOccurred = dateOccureddtPicker.Value.Date;
             trip.Store = _lastSelectedStore;
             trip.MedicineDetails = new Tuple<string, int, int>(
                 _lastSelectedMedicine.Name, int.Parse(boxSizeDropDown.SelectedItem.ToString()), (int)amountBoughtNumericTextBox.Value);
@@ -165,6 +165,7 @@ namespace AuditTrailer.TripManagement
         	boxSizeDropDown.Text = string.Empty;
         	medicineComboBox.SelectedText = string.Empty;
 			medicineComboBox.Text = string.Empty;
+			dateOccureddtPicker.Value = DateTime.Today;
         }
         
         void ToolTip1Popup(object sender, PopupEventArgs e)

@@ -43,7 +43,8 @@ namespace AuditTrailer
 			Dictionary<ToolStripMenuItem, RoleEnum> rolesRequired = new Dictionary<ToolStripMenuItem, RoleEnum>
                 {
                     { addStoreToolStripMenuItem, RoleEnum.Moderator },
-                    { addTripToolStripMenuItem, RoleEnum.User }
+                    { addTripToolStripMenuItem, RoleEnum.User },
+					{ databaseManagementToolStripMenuItem, RoleEnum.Administrator }
                 };
             var results = rolesRequired.Select(
                 s =>

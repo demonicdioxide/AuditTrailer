@@ -38,6 +38,7 @@ namespace AuditTrailerScheduler
 			if (firstArgument.Equals("backup"))
 			{
 				BackupDatabase();
+				Environment.Exit(0); // successful exit.
 			}
 			else
 			{
@@ -46,6 +47,7 @@ namespace AuditTrailerScheduler
 			}
 			SendReminderEmail("arran.huxtable@gmail.com");
 			Environment.Exit(0); // successful exit.
+			
 		}
 		
 		private static void BackupDatabase()
