@@ -26,7 +26,7 @@ namespace AuditTrailer.Application.Managers
 
         public void AddTrip(Trip trip)
         {
-            string commandText = "SELECT TripID FROM Trip ORDER BY TripID DESC LIMIT 1";
+            string commandText = "SELECT TripID FROM Trip WHERE Deleted = 0 ORDER BY TripID DESC LIMIT 1";
             int lastID = 0;
             var command = connection.CreateCommand(commandText);
             using (var reader = command.ExecuteReader())
@@ -70,7 +70,7 @@ namespace AuditTrailer.Application.Managers
             command = connection.CreateCommand(
                 @"INSERT INTO Trip 
                     SELECT @LastID, @DateOccurred, @BoxSizeBought, @AmountBought, @MedicineID, @StoreID, 
-				@UserID, @Notes, @CreatedByID, @Visible, @ExpiryDate");
+				@UserID, @Notes, @CreatedByID, @Visible, @ExpiryDate, @Deleted");
             command.Parameters.AddWithValue("@LastID", lastID + 1);
             command.Parameters.AddWithValue("@DateOccurred", trip.DateOccurred);
             command.Parameters.AddWithValue("@BoxSizeBought", medicineBoxSize.BoxSizeID);
@@ -82,6 +82,7 @@ namespace AuditTrailer.Application.Managers
 			command.Parameters.AddWithValue("@CreatedByID", trip.CreatedByID);
 			command.Parameters.AddWithValue("@Visible", trip.Visible);
 			command.Parameters.AddWithValue("@ExpiryDate", trip.ExpiryDate);
+			command.Parameters.AddWithValue("@Deleted", trip.Deleted);
             int numberAdded = command.ExecuteNonQuery();
             if (numberAdded != 1)
             {
@@ -92,7 +93,7 @@ namespace AuditTrailer.Application.Managers
 		
 		public DateTime? GetLastExpiryDateForMedicine(int medicineID)
 		{
-			string commandText = @"SELECT T.ExpiryDate FROM Trip T WHERE T.BoughtMedicineID = @ID ORDER BY T.ExpiryDate DESC LIMIT 1";
+			string commandText = @"SELECT T.ExpiryDate FROM Trip T WHERE T.BoughtMedicineID = @ID AND T.Deleted = 0 ORDER BY T.ExpiryDate DESC LIMIT 1";
 			var command = connection.CreateCommand(commandText);
             command.Parameters.AddWithValue("@ID", medicineID);
 			 using (var reader = command.ExecuteReader())
@@ -115,7 +116,7 @@ namespace AuditTrailer.Application.Managers
                                     JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
                                     JOIN User U ON U.UserID = T.UserID
                                     JOIN BoxSize BZ ON BZ.BoxSizeID = T.BoxSizeID 
-                                    WHERE T.StoreID = @StoreID AND T.Visible = 1";
+                                    WHERE T.StoreID = @StoreID AND T.Deleted = 0 AND T.Visible = 1";
             var command = connection.CreateCommand(commandText);
             command.Parameters.AddWithValue("@StoreID", store.ID);
             using (var reader = command.ExecuteReader())
@@ -132,6 +133,7 @@ namespace AuditTrailer.Application.Managers
                     trip.DateOccurred = DateTime.Parse(reader["DateOccurred"].ToString());
                     trip.Notes = string.IsNullOrEmpty(reader["Notes"].ToString()) ? string.Empty : reader["Notes"].ToString();
 					trip.Visible = true;
+					trip.Deleted = false;
                     trips.Add(trip);
                 }
             }

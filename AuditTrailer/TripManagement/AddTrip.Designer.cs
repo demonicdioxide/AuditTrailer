@@ -150,11 +150,6 @@
         	this.boxSizeDropDown.Name = "boxSizeDropDown";
         	this.boxSizeDropDown.Size = new System.Drawing.Size(200, 21);
         	this.boxSizeDropDown.TabIndex = 12;
-        	// 
-        	// onlineToolTip
-        	// 
-        	this.onlineToolTip.Popup += new System.Windows.Forms.PopupEventHandler(this.ToolTip1Popup);
-        	// 
         	// label6
         	// 
         	this.label6.Location = new System.Drawing.Point(28, 178);

@@ -40,7 +40,7 @@ namespace AuditTrailer.Application.Managers
 		{
 						string commandText = @"SELECT M.PainRelieverID, M.Name, T.ExpiryDate FROM Trip T
 												JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
-												WHERE T.UserID = @ID
+												WHERE T.UserID = @ID AND T.Deleted = 0
 												GROUP BY M.Name
 												ORDER BY T.ExpiryDate DESC";
 			var command = _connection.CreateCommand(commandText);
@@ -91,6 +91,7 @@ namespace AuditTrailer.Application.Managers
 			var command = _connection.CreateCommand(@"SELECT T.UserID, SUM(T.[AmountOfBoxesBought] * B.Name) As [Amount Of Tablets], M.Name As [MedicineName], T.BoughtMedicineID As [MedicineID] FROM Trip T
 					JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
 					JOIN BoxSize B ON B.BoxSizeID = T.BoxSizeID
+					WHERE T.Deleted = 0
 					GROUP BY T.UserID, M.PainRelieverID");
 			var _information = new List<Tuple<string, int, DateTime, int>>();
 			using (var reader = command.ExecuteReader())

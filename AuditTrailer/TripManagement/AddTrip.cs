@@ -67,6 +67,7 @@ namespace AuditTrailer.TripManagement
             	}
 
                 lastTrip = GetLastTripForStore(_lastSelectedStore);
+				 _storeTrips.Add(dropdownBox.SelectedItem.ToString(), lastTrip);
             }
 
             // after all this, is it null? If so they really have not been there
@@ -77,7 +78,7 @@ namespace AuditTrailer.TripManagement
             else
             {
             	lastVisitedLabel.Text = "Last visited: " + lastTrip.DateOccurred.ToLongDateString();
-                _storeTrips.Add(dropdownBox.SelectedItem.ToString(), lastTrip);
+               
             }
 
             lastVisitedLabel.Visible = true;
@@ -101,7 +102,7 @@ namespace AuditTrailer.TripManagement
 
         private Trip GetLastTripForStore(Store store)
         {
-            return _tripManager.GetTripsForStore(store).OrderByDescending(t => t.DateOccurred).LastOrDefault();
+			return _tripManager.GetTripsForStore(store).OrderByDescending(t => t.DateOccurred).ThenByDescending(r => r.ExpiryDate).LastOrDefault();
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -140,6 +141,7 @@ namespace AuditTrailer.TripManagement
             trip.Notes = notesTextBox.Text;
 			trip.CreatedByID = LoggedInUser.ID;
 			trip.Visible = true;
+			trip.Deleted = false;
 			_tripManager.AddTrip(trip);
             MessageBox.Show("Successfully added trip!");
             ClearStates();
@@ -166,10 +168,6 @@ namespace AuditTrailer.TripManagement
         	medicineComboBox.SelectedText = string.Empty;
 			medicineComboBox.Text = string.Empty;
 			dateOccureddtPicker.Value = DateTime.Today;
-        }
-        
-        void ToolTip1Popup(object sender, PopupEventArgs e)
-        {        	
-        }
+		}
     }
 }

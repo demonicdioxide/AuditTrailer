@@ -40,5 +40,7 @@ namespace AuditTrailer.Application.Model
 		public bool Visible { get; set; }
 		
 		public DateTime ExpiryDate { get; set; }
+		
+		public bool Deleted { get; set; }
 	}
 }

@@ -40,6 +40,7 @@ namespace AuditTrailer.Authorisation
             InitializeComponent();
             securityManager = new SecurityManager(DatabaseConnector.Create());
             attemptedLogins = 0;
+			usernameToolTip.SetToolTip(emailLabel, "This is either your username or email address");
         }
 
         private void loginButton_Click(object sender, EventArgs e)

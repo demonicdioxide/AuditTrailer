@@ -32,12 +32,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+        	this.components = new System.ComponentModel.Container();
         	this.loginButton = new System.Windows.Forms.Button();
         	this.emailTextBox = new System.Windows.Forms.TextBox();
         	this.passwordTextBox = new System.Windows.Forms.TextBox();
         	this.emailLabel = new System.Windows.Forms.Label();
         	this.passwordLabel = new System.Windows.Forms.Label();
         	this.resetPasswordButton = new System.Windows.Forms.Button();
+        	this.usernameToolTip = new System.Windows.Forms.ToolTip(this.components);
         	this.SuspendLayout();
         	// 
         	// loginButton
@@ -71,9 +73,9 @@
         	this.emailLabel.AutoSize = true;
         	this.emailLabel.Location = new System.Drawing.Point(12, 19);
         	this.emailLabel.Name = "emailLabel";
-        	this.emailLabel.Size = new System.Drawing.Size(35, 13);
+        	this.emailLabel.Size = new System.Drawing.Size(58, 13);
         	this.emailLabel.TabIndex = 3;
-        	this.emailLabel.Text = "Email:";
+        	this.emailLabel.Text = "Username:";
         	// 
         	// passwordLabel
         	// 
@@ -111,6 +113,7 @@
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }
+        private System.Windows.Forms.ToolTip usernameToolTip;
         private System.Windows.Forms.Button resetPasswordButton;
 
         #endregion
