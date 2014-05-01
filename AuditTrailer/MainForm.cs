@@ -18,6 +18,7 @@ using AuditTrailer.Forms;
 using AuditTrailer.StoreManagement;
 using AuditTrailer.TripManagement;
 using AuditTrailer.UserManagement;
+using AuditTrailer.Application.Configuration;
 
 namespace AuditTrailer
 {
@@ -29,7 +30,7 @@ namespace AuditTrailer
 		
 		public MainForm(User user) : base(user)
         {
-        	this.Text = "Logged in as: " + LoggedInUser.FullName;
+			this.Text = "Logged in as: " + (ApplicationConfiguration.InPrivateMode ? LoggedInUser.Username : LoggedInUser.FullName);
         }
 		
 		void MainFormLoad(object sender, EventArgs e)

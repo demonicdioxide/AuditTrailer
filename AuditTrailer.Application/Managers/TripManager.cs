@@ -45,9 +45,7 @@ namespace AuditTrailer.Application.Managers
                 throw new SecurityException("Box Size is not applicable for this medication");
             }
 			
-			int howManyTakenADay = MedicineConstants.GetDailyDosageForMedicine(trip.PainRelieverBought.Name);
-			int amountOfTablets = trip.BoxSizeBought * trip.AmountBought;
-			int howManyDaysItLasts = amountOfTablets / howManyTakenADay;
+
 			
 			DateTime? lastExpiryDateForMedicine = GetLastExpiryDateForMedicine(trip.PainRelieverBought.ID);
 			DateTime parsedLastExpiryDate;
@@ -63,7 +61,7 @@ namespace AuditTrailer.Application.Managers
 				parsedLastExpiryDate = lastExpiryDateForMedicine.Value;
 			}
 		
-
+			int howManyDaysItLasts = GetDaysLastingForMedicine(trip.PainRelieverBought.Name, trip.BoxSizeBought, trip.AmountBought);
 			DateTime calculatedExpiryDate = parsedLastExpiryDate.AddDays(howManyDaysItLasts);
 			trip.ExpiryDate = calculatedExpiryDate;
 
@@ -90,6 +88,14 @@ namespace AuditTrailer.Application.Managers
             }
 
         }
+		
+		public int GetDaysLastingForMedicine(string medicineName, int boxSizeBought, int amountBought)
+		{
+			int howManyTakenADay = MedicineConstants.GetDailyDosageForMedicine(medicineName);
+			int amountOfTablets = boxSizeBought * amountBought;
+			int howManyDaysItLasts = amountOfTablets / howManyTakenADay;
+			return howManyDaysItLasts;
+		}
 		
 		public DateTime? GetLastExpiryDateForMedicine(int medicineID)
 		{

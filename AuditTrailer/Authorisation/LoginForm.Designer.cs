@@ -40,11 +40,12 @@
         	this.passwordLabel = new System.Windows.Forms.Label();
         	this.resetPasswordButton = new System.Windows.Forms.Button();
         	this.usernameToolTip = new System.Windows.Forms.ToolTip(this.components);
+        	this.privateModeCheckBox = new System.Windows.Forms.CheckBox();
         	this.SuspendLayout();
         	// 
         	// loginButton
         	// 
-        	this.loginButton.Location = new System.Drawing.Point(74, 72);
+        	this.loginButton.Location = new System.Drawing.Point(12, 101);
         	this.loginButton.Name = "loginButton";
         	this.loginButton.Size = new System.Drawing.Size(107, 38);
         	this.loginButton.TabIndex = 3;
@@ -88,7 +89,7 @@
         	// 
         	// resetPasswordButton
         	// 
-        	this.resetPasswordButton.Location = new System.Drawing.Point(187, 72);
+        	this.resetPasswordButton.Location = new System.Drawing.Point(187, 101);
         	this.resetPasswordButton.Name = "resetPasswordButton";
         	this.resetPasswordButton.Size = new System.Drawing.Size(107, 38);
         	this.resetPasswordButton.TabIndex = 4;
@@ -96,11 +97,23 @@
         	this.resetPasswordButton.UseVisualStyleBackColor = true;
         	this.resetPasswordButton.Click += new System.EventHandler(this.ResetPasswordButtonClick);
         	// 
+        	// privateModeCheckBox
+        	// 
+        	this.privateModeCheckBox.Checked = true;
+        	this.privateModeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+        	this.privateModeCheckBox.Location = new System.Drawing.Point(100, 71);
+        	this.privateModeCheckBox.Name = "privateModeCheckBox";
+        	this.privateModeCheckBox.Size = new System.Drawing.Size(104, 24);
+        	this.privateModeCheckBox.TabIndex = 5;
+        	this.privateModeCheckBox.Text = "Private Mode?";
+        	this.privateModeCheckBox.UseVisualStyleBackColor = true;
+        	// 
         	// LoginForm
         	// 
         	this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         	this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        	this.ClientSize = new System.Drawing.Size(335, 125);
+        	this.ClientSize = new System.Drawing.Size(328, 185);
+        	this.Controls.Add(this.privateModeCheckBox);
         	this.Controls.Add(this.resetPasswordButton);
         	this.Controls.Add(this.passwordLabel);
         	this.Controls.Add(this.emailLabel);
@@ -113,6 +126,7 @@
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }
+        private System.Windows.Forms.CheckBox privateModeCheckBox;
         private System.Windows.Forms.ToolTip usernameToolTip;
         private System.Windows.Forms.Button resetPasswordButton;
 

@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Authorisation\PasswordStrengthValidationResult.cs" />
     <Compile Include="Authorisation\SecurityManager.cs" />
+    <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnector.cs" />
     <Compile Include="Email\EmailSender.cs" />
@@ -106,6 +107,7 @@
     <Folder Include="Email\Templating" />
     <Folder Include="Logging" />
     <Folder Include="Net" />
+    <Folder Include="Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Email\Templating\remindertemplate.htm">

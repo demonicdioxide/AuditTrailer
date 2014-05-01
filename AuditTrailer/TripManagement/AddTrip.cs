@@ -102,7 +102,7 @@ namespace AuditTrailer.TripManagement
 
         private Trip GetLastTripForStore(Store store)
         {
-			return _tripManager.GetTripsForStore(store).OrderByDescending(t => t.DateOccurred).ThenByDescending(r => r.ExpiryDate).LastOrDefault();
+			return _tripManager.GetTripsForStore(store).OrderBy(t => t.DateOccurred).LastOrDefault();
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -143,9 +143,17 @@ namespace AuditTrailer.TripManagement
 			trip.Visible = true;
 			trip.Deleted = false;
 			_tripManager.AddTrip(trip);
+			ClearStates();
+			ClearCachedTrips();
             MessageBox.Show("Successfully added trip!");
-            ClearStates();
+
+			
         }
+		
+		private void ClearCachedTrips()
+		{
+			_storeTrips.Clear();
+		}
 
         private void medicineComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -153,7 +161,7 @@ namespace AuditTrailer.TripManagement
             var name = medicine.SelectedItem.ToString();
             _lastSelectedMedicine = _medicines.First(f => f.Name.Equals(name));
             boxSizeDropDown.DataSource = _lastSelectedMedicine.BoxSizes.Select(b => b.Name).ToList();
-
+			dropdownStores_SelectedIndexChanged(dropdownStores, EventArgs.Empty);
         }
         
         private void ClearStates()
@@ -168,6 +176,7 @@ namespace AuditTrailer.TripManagement
         	medicineComboBox.SelectedText = string.Empty;
 			medicineComboBox.Text = string.Empty;
 			dateOccureddtPicker.Value = DateTime.Today;
+			lastVisitedLabel.Visible = false;
 		}
     }
 }

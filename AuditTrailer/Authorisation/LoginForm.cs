@@ -16,6 +16,7 @@ namespace AuditTrailer.Authorisation
     using System.Windows.Forms;
     using Application.Database;
 
+	using AuditTrailer.Application.Configuration;
     using AuditTrailer.Application.Model;
     using AuditTrailer.Forms;
 
@@ -88,7 +89,9 @@ namespace AuditTrailer.Authorisation
 				user = securityManager.GetUserByUsername(text);				
 			}
             Hide();
+			ApplicationConfiguration.SetApplicationConfiguration(privateModeCheckBox.Checked);
             var mainForm = new MainForm(user);
+			
             mainForm.Show();
         }
         
@@ -125,6 +128,7 @@ namespace AuditTrailer.Authorisation
         		emailSender.SendEmail(message);
         		
         		passwordTextBox.Text = string.Empty;
+				ApplicationConfiguration.SetApplicationConfiguration(privateModeCheckBox.Checked);
         		var resetConfirmationForm = new ResetPasswordConfirmation(user.Email);
         		resetConfirmationForm.ShowDialog();
         		if (resetConfirmationForm.WasResetSuccessful) 
