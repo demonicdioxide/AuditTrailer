@@ -18,15 +18,28 @@ namespace AuditTrailer.StoreManagement
     {
         private IEnumerable<Store> AllStores { get; set; } 
         private CollectionManager _collectionManager { get; set; }
+        private TripManager _tripManager { get; set; }
 
         public ManageStores(User loggedInUser) : base(loggedInUser)
         {
             _collectionManager = new CollectionManager();
+            _tripManager = new TripManager(DatabaseConnector.Create());
         }
 
         public void GetAllStores()
         {
-            AllStores =  _collectionManager.GetAllStores();
+        	// this needs to be more generic, but this hack will work for now
+        	string sort = sortByComboBox.SelectedText.ToLower();
+        	
+        	switch (sort) 
+        	{
+        		case "last trip date":
+        			AllStores = _collectionManager.GetAllStores().OrderByDescending(s => s.LastTripDate).ToList();
+        			break;
+        		default:
+        			AllStores = _collectionManager.GetAllStores().ToList();
+        			break;
+        	}
         }
 
         private void ManageStores_Load(object sender, EventArgs e)
@@ -38,6 +51,7 @@ namespace AuditTrailer.StoreManagement
 
         private void LoadStores()
         {
+        	storeCollectionCombox.Items.Clear();
             var distinctStores = AllStores.GroupBy(s => s.Name).Select(s => s.First());
             foreach (var store in distinctStores)
             {
@@ -124,5 +138,10 @@ namespace AuditTrailer.StoreManagement
                 viewMoreDetailsButton.Enabled = false;
             }
         }
+		void SortByComboBoxSelectionChangeCommitted(object sender, System.EventArgs e)
+		{
+			GetAllStores();
+			LoadStores();
+		}
     }
 }

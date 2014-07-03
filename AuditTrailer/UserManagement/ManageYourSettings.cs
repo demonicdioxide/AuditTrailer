@@ -14,7 +14,8 @@ namespace AuditTrailer.UserManagement
 {
     using AuditTrailer.Application.Model;
     using AuditTrailer.Forms;
-
+    using AuditTrailer.Application;
+    
     public partial class ManageYourSettings : AuthorisedBaseForm
     {
     	private ReminderManager _reminderManager;
@@ -33,7 +34,15 @@ namespace AuditTrailer.UserManagement
         	reminderRunOutDateLabel.Visible = false;
         	roleLabel.Text = SecurityManager.GetRoleDisplayName(LoggedInUser.Role);
         	_runOutMappings = _reminderManager.GetMedicineReminderForUser(LoggedInUser);
-        	var medicines = _collectionManager.GetAllPainReliefMedicine().Where(r => !r.IsPrescriptionOnly);
+        	var medicines = _collectionManager.GetAllPainReliefMedicine().Select(s => 
+             {	
+				if (s.HasAlias) 
+				{
+					return _collectionManager.GetPainRelieverByName(s.AliasedMedicine);
+				}
+				
+				return s;
+        	                                                                     }).DistinctBy(p => p.Name);
         	medicineComboBox.DataSource = medicines.Select(m => m.Name).ToList();
 			medicineGroupBox.Text += " - " + _runOutMappings.Min(m => m.ExpiryDate).AddDays(-LoggedInUser.ReminderRangeInDays).ToLongDateString();
         }

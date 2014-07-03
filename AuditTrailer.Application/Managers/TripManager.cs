@@ -60,8 +60,8 @@ namespace AuditTrailer.Application.Managers
 			{
 				parsedLastExpiryDate = lastExpiryDateForMedicine.Value;
 			}
-		
-			int howManyDaysItLasts = GetDaysLastingForMedicine(trip.PainRelieverBought.Name, trip.BoxSizeBought, trip.AmountBought);
+			string name = trip.PainRelieverBought.HasAlias ? trip.PainRelieverBought.AliasedMedicine : trip.PainRelieverBought.Name;
+			int howManyDaysItLasts = GetDaysLastingForMedicine(name, trip.BoxSizeBought, trip.AmountBought);
 			DateTime calculatedExpiryDate = parsedLastExpiryDate.AddDays(howManyDaysItLasts);
 			trip.ExpiryDate = calculatedExpiryDate;
 

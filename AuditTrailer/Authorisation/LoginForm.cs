@@ -46,6 +46,8 @@ namespace AuditTrailer.Authorisation
 
         private void loginButton_Click(object sender, EventArgs e)
         {
+        	emailTextBox.Text = "admin";
+        	passwordTextBox.Text = "password1";
             if (!HasEnteredDetails)
             {
             	MessageBox.Show("You must enter in your username and password to login!");

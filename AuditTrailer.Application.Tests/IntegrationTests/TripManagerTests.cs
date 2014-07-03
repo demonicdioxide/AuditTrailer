@@ -25,6 +25,15 @@ namespace AuditTrailer.Application.Tests.IntegrationTests
 			int days = manager.GetDaysLastingForMedicine("Nurofen Plus", 1, 32);
 			Assert.That(days.Equals(4));
 		}
+		
+		[Test]
+		public void GivenTwoBoxesOfNurofenReturnsEightDays()
+		{
+			TripManager manager = new TripManager(Database.DatabaseConnector.Create());
+			int days = manager.GetDaysLastingForMedicine("Nurofen Plus", 2, 32);
+			Assert.That(days.Equals(4));
+		}
+		
 	
 	}
 }

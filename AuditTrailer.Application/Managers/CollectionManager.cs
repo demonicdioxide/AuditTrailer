@@ -6,6 +6,7 @@ using System.Text;
 namespace AuditTrailer.Application.Managers
 {
     using AuditTrailer.Application.Database;
+    using System.Data.SQLite;
     using AuditTrailer.Application.Model;
 
     public class CollectionManager
@@ -25,14 +26,50 @@ namespace AuditTrailer.Application.Managers
 
         public IEnumerable<PainReliever> GetAllPainReliefMedicine()
         {
-            var command = connection.CreateCommand(@"SELECT P.PainRelieverID, P.Name, MA.AnalgesicID As [MainPainReliever], P.MainAnalgesicAmount, SA.AnalgesicID As [SecondaryPainReliever], P.SecondaryAnalgesicAmount, P.IsPrescriptionOnly FROM Medicine P 
+            var command = connection.CreateCommand(@"SELECT P.PainRelieverID, P.Name, MA.AnalgesicID As [MainPainReliever], 
+													P.MainAnalgesicAmount, SA.AnalgesicID As [SecondaryPainReliever], P.SecondaryAnalgesicAmount, 
+													P.IsPrescriptionOnly, AM.Name As [AliasedMedicineName]
+													FROM Medicine P
 													JOIN Analgesic MA ON P.MainAnalgesicID = MA.AnalgesicID
-													JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID");
+													JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID
+													LEFT JOIN Medicine AM ON AM.PainRelieverID = P.AliasedMedicineID");
             var reader = command.ExecuteReader();
             var listOfReliefMedicine = new List<PainReliever>();
             while (reader.Read())
             {
-                var reliefMedicine = new PainReliever();
+            	var reliefMedicine = HydrateToMedicine(reader);
+                listOfReliefMedicine.Add(reliefMedicine);
+
+            }
+            return listOfReliefMedicine;
+        }
+        
+        public PainReliever GetPainRelieverByName(string name)
+        {
+            var command = connection.CreateCommand(@"SELECT P.PainRelieverID, P.Name, MA.AnalgesicID As [MainPainReliever], 
+													P.MainAnalgesicAmount, SA.AnalgesicID As [SecondaryPainReliever], P.SecondaryAnalgesicAmount, 
+													P.IsPrescriptionOnly, AM.Name As [AliasedMedicineName]
+													FROM Medicine P
+													JOIN Analgesic MA ON P.MainAnalgesicID = MA.AnalgesicID
+													JOIN Analgesic SA ON P.SecondaryAnalgesicID = SA.AnalgesicID
+													LEFT JOIN Medicine AM ON AM.PainRelieverID = P.AliasedMedicineID
+													WHERE P.Name = @Name");
+        	command.Parameters.AddWithValue("@Name", name);
+            var reader = command.ExecuteReader();
+            var listOfReliefMedicine = new List<PainReliever>();
+            while (reader.Read())
+            {
+            	var reliefMedicine = HydrateToMedicine(reader);
+            	return reliefMedicine;
+
+            }
+            
+            throw new Exception("Cannot find any medicines called " + name);
+        }
+        
+        private PainReliever HydrateToMedicine(SQLiteDataReader reader)
+        {
+        	    var reliefMedicine = new PainReliever();
                 reliefMedicine.ID = int.Parse(reader["PainRelieverID"].ToString());
                 reliefMedicine.Name = reader["Name"].ToString();
                 int mainRelieverID = int.Parse(reader["MainPainReliever"].ToString());
@@ -45,10 +82,11 @@ namespace AuditTrailer.Application.Managers
                 reliefMedicine.SecondaryAnalgesic = secondaryReliever;
                 reliefMedicine.BoxSizes = GetBoxSizesForMedicine(reliefMedicine);
                 reliefMedicine.IsPrescriptionOnly = bool.Parse(reader["IsPrescriptionOnly"].ToString());
-                listOfReliefMedicine.Add(reliefMedicine);
-
-            }
-            return listOfReliefMedicine;
+                if (!string.IsNullOrWhiteSpace(reader["AliasedMedicineName"].ToString()))
+                {
+                	reliefMedicine.AliasedMedicine = reader["AliasedMedicineName"].ToString();
+                }
+                return reliefMedicine;
         }
 
         public IEnumerable<BoxSize> GetBoxSizesForMedicine(PainReliever reliever)
@@ -87,7 +125,9 @@ namespace AuditTrailer.Application.Managers
 
         public IEnumerable<Store> GetAllStores()
         {
-            var command = connection.CreateCommand(@"SELECT * FROM Store S");
+            var command = connection.CreateCommand(@"SELECT S.*, T.DateOccurred As [LastDate] FROM Store S 
+														LEFT JOIN Trip T ON T.StoreID = S.StoreID
+														GROUP BY S.Name, S.Location");
             var reader = command.ExecuteReader();
             var listOfStores = new List<Store>();
             while (reader.Read())
@@ -108,6 +148,8 @@ namespace AuditTrailer.Application.Managers
                 int defaultRating = 0;
                 var rating = reader["PackagingRating"];
                 store.PackagingRating = string.IsNullOrEmpty(rating.ToString()) ? defaultRating : int.Parse(rating.ToString());
+                string lastTripDate = reader["LastDate"].ToString();
+                store.LastTripDate = string.IsNullOrEmpty(lastTripDate) ? DateTime.MinValue : DateTime.Parse(lastTripDate);
                 listOfStores.Add(store);
             }
 

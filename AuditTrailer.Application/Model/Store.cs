@@ -15,6 +15,7 @@ namespace AuditTrailer.Application.Model
         public bool IsOnlineStore { get; set; }
         public int PackagingRating { get; set;}
         public string Notes { get; set; }
+        public DateTime LastTripDate { get; set; }
         public override string ToString()
         {
             return Name;
