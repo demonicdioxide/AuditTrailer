@@ -40,7 +40,7 @@ namespace AuditTrailer.Application.Managers
 		{
 						string commandText = @"SELECT M.PainRelieverID, M.Name, T.ExpiryDate FROM Trip T
 												JOIN Medicine M ON M.PainRelieverID = T.BoughtMedicineID
-												WHERE T.UserID = @ID AND T.Deleted = 0
+												WHERE T.UserID = @ID AND T.Deleted = 0 AND M.AliasedMedicineID IS NULL
 												GROUP BY M.Name
 												ORDER BY T.ExpiryDate DESC";
 			var command = _connection.CreateCommand(commandText);
